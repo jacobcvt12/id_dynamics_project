@@ -21,3 +21,39 @@ k.d <- 0.068
 param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
            epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
+
+# sequence of times
+max.time <- 1e3
+times <- seq(0, max.time, 1) 
+
+# initial state
+initial.state <- c("R"=20,
+                   "S"=0,
+                   "P"=0,
+                   "C"=0,
+                   "D"=0)
+
+# diff eq function
+dx.dt <- function(t, y, param) {
+    # current state
+    R <- y["R"]
+    S <- y["S"]
+    P <- y["P"]
+    C <- y["C"]
+    D <- y["D"]
+
+    # params
+
+    # ODEs
+    lambda <- param["beta.c"] * (C + P) + 
+              param["beta.d"] * D
+    N = R + S + C + P + D
+    dR <- a.r * delta*N + theta*S - k.r*R - alpha * R
+    dS <- a.s * delta * N + alpha * R + p * epsilon * D - 
+          theta * S - k * S - lambda * S
+    dP <- a.cp * delta * N + f * lambda * S - k * P
+    dC <- a.cn * delta * N + (1 - f) * lambda * S - phi * C - k * C
+    dD <- a.d * delta * N + phi * C - p * epsilon * D - k.d * D
+
+    return(list(c(dR, dS, dP, dC, dD)))
+}
