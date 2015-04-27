@@ -42,7 +42,8 @@ dx.dt <- function(t, y, param) {
     C <- y["C"]
     D <- y["D"]
 
-    # params
+    # params see lines 5 - 18
+    a.r <- param["a.r"]
 
     # ODEs
     lambda <- param["beta.c"] * (C + P) + 
