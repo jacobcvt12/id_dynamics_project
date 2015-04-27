@@ -1,3 +1,6 @@
+# libraries
+library(deSolve)
+
 # parameters
 a.r <- 0.75
 a.s <- 0.22
@@ -14,3 +17,7 @@ k.r <- 0.33
 k <- 0.15
 k.d <- 0.068
 
+# parameter vector
+param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
+           theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
+           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
