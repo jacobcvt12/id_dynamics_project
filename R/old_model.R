@@ -44,7 +44,20 @@ dx.dt <- function(t, y, param) {
 
     # params see lines 5 - 18
     a.r <- param["a.r"]
-
+    a.s <- param["a.s"]
+    a.cn <- a.cp <- param[""] ##not sure here?
+    a.d <- param["a.d"]
+    alpha <- param["alpha"]
+    theta <- param["theta"]
+    beta.c <- beta.d <- param[""] ##not sure here?
+    f <- param["f"]
+    epsilon <- param["epsilon"]
+    p <- param["p"]
+    phi <- param["phi"]
+    k.r <- param["k.r"]
+    k <- param["k"]
+    k.d <- param["k.d"]
+    
     # ODEs
     lambda <- param["beta.c"] * (C + P) + 
               param["beta.d"] * D
