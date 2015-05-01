@@ -6,8 +6,15 @@ author:
 - Katie Goodman
 - Alex Pyden
 date: "`r format(Sys.time(), '%d %B %Y')`"
+abstract: |
+  We looked at the Lanzas paper that investigated C Diff in a health care setting. Since then, there have been updates to care in C Diff, and we updated our model to account for this.
+
+  There was math and disease. We did some differential equations and some simulations.
+
+  Interest results that we found. It was really meaningful. Will change C Diff care forever.
 output: pdf_document
 ---
+\newpage
 
 ```{r chunks, echo=FALSE}
 knitr::opts_chunk$set(echo=FALSE,
@@ -18,9 +25,12 @@ knitr::opts_chunk$set(echo=FALSE,
 # libraries
 library(deSolve)
 library(ggplot2)
+library(dplyr)
+library(tidyr)
+theme_set(theme_classic())
 
 # programs
-source("../R/old_model.R")
+source("../R/model.R")
 ```
 
 ```{r params}
@@ -46,18 +56,29 @@ param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
 
 # sequence of times
-max.time <- 1e3
+max.time <- 1e2
 times <- seq(0, max.time, 1) 
 
 # initial state
-initial.state <- c(R=20,
+initial.state <- c(R=100,
                    S=0,
                    P=0,
-                   C=0,
+                   C=1,
                    D=0)
 ```
 
 ```{r models}
 # run ode solver
-model.output <- lsoda(initial.state, times, dx.dt, param)
+model.output.old <- lsoda(initial.state, times, dx.dt.orig, param)
+```
+We reran the Lanzas model with a closed population.
+
+```{r graphs-old}
+data <- model.output %>% 
+    data.frame() %>%
+    tbl_df() %>%
+    gather(compartment, size, R:D)
+
+ggplot(data, aes(x=time, y=size)) +
+    geom_line(aes(colour=compartment))
 ```
