@@ -27,11 +27,11 @@ max.time <- 1e3
 times <- seq(0, max.time, 1) 
 
 # initial state
-initial.state <- c("R"=20,
-                   "S"=0,
-                   "P"=0,
-                   "C"=0,
-                   "D"=0)
+initial.state <- c(R=20,
+                   S=0,
+                   P=0,
+                   C=0,
+                   D=0)
 
 # diff eq function
 dx.dt <- function(t, y, param) {
@@ -42,14 +42,16 @@ dx.dt <- function(t, y, param) {
     C <- y["C"]
     D <- y["D"]
 
-    # params see lines 5 - 18
+    # params 
     a.r <- param["a.r"]
     a.s <- param["a.s"]
-    a.cn <- a.cp <- param[""] ##not sure here?
+    a.cn <- param["a.cn"]
+    a.cp <- param["a.cp"]
     a.d <- param["a.d"]
     alpha <- param["alpha"]
     theta <- param["theta"]
-    beta.c <- beta.d <- param[""] ##not sure here?
+    beta.c <- param["beta.c"]
+    beta.d <- param["beta.d"] 
     f <- param["f"]
     epsilon <- param["epsilon"]
     p <- param["p"]
@@ -58,10 +60,12 @@ dx.dt <- function(t, y, param) {
     k <- param["k"]
     k.d <- param["k.d"]
     
-    # ODEs
+    delta <- 1 # set delta = 1 for now
     lambda <- param["beta.c"] * (C + P) + 
               param["beta.d"] * D
     N = R + S + C + P + D
+
+    # ODEs
     dR <- a.r * delta*N + theta*S - k.r*R - alpha * R
     dS <- a.s * delta * N + alpha * R + p * epsilon * D - 
           theta * S - k * S - lambda * S
