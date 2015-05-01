@@ -1,5 +1,6 @@
 # libraries
 library(deSolve)
+library(ggplot2)
 
 # parameters
 a.r <- 0.75
@@ -60,10 +61,12 @@ dx.dt <- function(t, y, param) {
     k <- param["k"]
     k.d <- param["k.d"]
     
-    delta <- 1 # set delta = 1 for now
     lambda <- param["beta.c"] * (C + P) + 
               param["beta.d"] * D
     N = R + S + C + P + D
+
+    # delta * N is the number of new admits per step
+    delta <- 0 # closed system for now
 
     # ODEs
     dR <- a.r * delta*N + theta*S - k.r*R - alpha * R
@@ -75,3 +78,6 @@ dx.dt <- function(t, y, param) {
 
     return(list(c(dR, dS, dP, dC, dD)))
 }
+
+# run ode solver
+model.output <- lsoda(initial.state, times, dx.dt, param)
