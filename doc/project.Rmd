@@ -1,0 +1,63 @@
+---
+title: "C Diff and Math!"
+author:
+- Jacob Carey
+- Sarah Cox
+- Katie Goodman
+- Alex Pyden
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: pdf_document
+---
+
+```{r chunks, echo=FALSE}
+knitr::opts_chunk$set(echo=FALSE,
+                      message=FALSE)
+```
+
+```{r libs}
+# libraries
+library(deSolve)
+library(ggplot2)
+
+# programs
+source("../R/old_model.R")
+```
+
+```{r params}
+# parameters
+a.r <- 0.75
+a.s <- 0.22
+a.cn <- a.cp <- 0.01
+a.d <- 0.01
+alpha <- 0.5
+theta <- 0.033
+beta.c <- beta.d <- 0.007
+f <- 0.6
+epsilon <- 0.1
+p <- 0.8
+phi <- 0.2
+k.r <- 0.33
+k <- 0.15
+k.d <- 0.068
+
+# parameter vector
+param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
+           theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
+           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
+
+# sequence of times
+max.time <- 1e3
+times <- seq(0, max.time, 1) 
+
+# initial state
+initial.state <- c(R=20,
+                   S=0,
+                   P=0,
+                   C=0,
+                   D=0)
+```
+
+```{r models}
+# run ode solver
+model.output <- lsoda(initial.state, times, dx.dt, param)
+```
