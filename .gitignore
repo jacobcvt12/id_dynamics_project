@@ -2,3 +2,4 @@
 *.Rproj
 *test
 *.swp
+*.DS_Store
