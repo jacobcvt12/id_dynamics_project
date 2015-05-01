@@ -21,6 +21,10 @@ knitr::opts_chunk$set(echo=FALSE,
                       message=FALSE)
 ```
 
+```{r runme, eval=FALSE}
+rmarkdown::render("doc/project.Rmd")
+```
+
 ```{r libs}
 # libraries
 library(deSolve)
@@ -50,35 +54,60 @@ k.r <- 0.33
 k <- 0.15
 k.d <- 0.068
 
+# sequence of times
+max.time <- 2.5e1
+times <- seq(0, max.time, 1) 
+
+# delta
+delta <- 1e-1
+```
+
+```{r old-model}
 # parameter vector
 param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
            epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
 
-# sequence of times
-max.time <- 1e2
-times <- seq(0, max.time, 1) 
+# initial state
+initial.state <- c(R=1e3, S=0, P=0, C=1e1, D=0)
+
+model.old <- lsoda(initial.state, times, dx.dt.orig, param, delta=delta)
+```
+
+```{r new-model}
+# parameter vector
+param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
+           theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
+           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
 
 # initial state
-initial.state <- c(R=100,
-                   S=0,
-                   P=0,
-                   C=1,
-                   D=0)
+initial.state <- c(R=1e3, S=0, C=1e1, D=0)
+
+model.new <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
 ```
 
-```{r models}
-# run ode solver
-model.output.old <- lsoda(initial.state, times, dx.dt.orig, param)
-```
-We reran the Lanzas model with a closed population.
+We reran the Lanzas model, but set delta equal to `r delta`.
 
 ```{r graphs-old}
-data <- model.output %>% 
+data <- model.old %>% 
     data.frame() %>%
     tbl_df() %>%
     gather(compartment, size, R:D)
 
 ggplot(data, aes(x=time, y=size)) +
-    geom_line(aes(colour=compartment))
+    geom_line(aes(colour=compartment, linetype=compartment)) +
+    ggtitle("Old Model")
+```
+
+We modified the Lanzas model and collapsed the colonized compartments into one colonized compartment, and did not distinguish between immune status. We chose to remove this distinction as it seemed somewhat arbitrary.
+
+```{r graphs-new}
+data <- model.new %>% 
+    data.frame() %>%
+    tbl_df() %>%
+    gather(compartment, size, R:D)
+
+ggplot(data, aes(x=time, y=size)) +
+    geom_line(aes(colour=compartment, linetype=compartment)) +
+    ggtitle("Collapsed Colonized Compartments")
 ```

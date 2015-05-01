@@ -1,5 +1,6 @@
+# delta * N is the number of new admits per step
 # diff eq function
-dx.dt.orig <- function(t, y, param) {
+dx.dt.orig <- function(t, y, param, delta=0) {
     # current state
     R <- y["R"]
     S <- y["S"]
@@ -29,9 +30,6 @@ dx.dt.orig <- function(t, y, param) {
               param["beta.d"] * D
     N = R + S + C + P + D
 
-    # delta * N is the number of new admits per step
-    delta <- 0 # closed system for now
-
     # ODEs
     dR <- a.r * delta*N + theta*S - k.r*R - alpha * R
     dS <- a.s * delta * N + alpha * R + p * epsilon * D - 
@@ -43,7 +41,7 @@ dx.dt.orig <- function(t, y, param) {
     return(list(c(dR, dS, dP, dC, dD)))
 }
 
-dx.dt.new <- function(t, y, param) {
+dx.dt.new <- function(t, y, param, delta=0) {
     # current state
     R <- y["R"]
     S <- y["S"]
@@ -60,7 +58,6 @@ dx.dt.new <- function(t, y, param) {
     theta <- param["theta"]
     beta.c <- param["beta.c"]
     beta.d <- param["beta.d"] 
-    f <- param["f"]
     epsilon <- param["epsilon"]
     p <- param["p"]
     phi <- param["phi"]
@@ -68,18 +65,15 @@ dx.dt.new <- function(t, y, param) {
     k <- param["k"]
     k.d <- param["k.d"]
     
-    lambda <- param["beta.c"] * (C + P) + 
+    lambda <- param["beta.c"] * C + 
               param["beta.d"] * D
     N = R + S + C + D
-
-    # delta * N is the number of new admits per step
-    delta <- 0 # closed system for now
 
     # ODEs
     dR <- a.r * delta*N + theta*S - k.r*R - alpha * R
     dS <- a.s * delta * N + alpha * R + p * epsilon * D - 
           theta * S - k * S - lambda * S
-    dC <- a.cn * delta * N + (1 - f) * lambda * S - phi * C - k * C
+    dC <- a.cn * delta * N + lambda * S - phi * C - k * C
     dD <- a.d * delta * N + phi * C - p * epsilon * D - k.d * D
 
     return(list(c(dR, dS, dC, dD)))
