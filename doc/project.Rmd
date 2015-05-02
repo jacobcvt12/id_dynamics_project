@@ -6,6 +6,7 @@ author:
 - Katie Goodman
 - Alex Pyden
 date: "`r format(Sys.time(), '%d %B %Y')`"
+bibliography: bibliography.bib
 abstract: |
   We looked at the Lanzas paper that investigated C Diff in a health care setting. Since then, there have been updates to care in C Diff, and we updated our model to account for this.
 
@@ -25,7 +26,7 @@ knitr::opts_chunk$set(echo=FALSE,
 # run this line to create the PDF!
 # you might have to change the path 
 # i.e. "~/Documents/grad-school-sucks/project.Rmd"
-rmarkdown::render("doc/project.Rmd")
+# rmarkdown::render("doc/project.Rmd")
 ```
 
 ```{r libs}
@@ -89,7 +90,11 @@ initial.state <- c(R=1e3, S=0, C=1e1, D=0)
 model.new <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
 ```
 
-We reran the Lanzas model, but set delta equal to `r delta`.
+The original model in @lanzas was written as
+$$
+\frac{dR}{dt}=a_r\delta N + \theta S - k_r R - \alpha R
+$$
+We reran the model, but set delta equal to `r delta`.
 
 ```{r graphs-old}
 data <- model.old %>% 
@@ -102,7 +107,7 @@ ggplot(data, aes(x=time, y=size)) +
     ggtitle("Old Model")
 ```
 
-We modified the Lanzas model and collapsed the colonized compartments into one colonized compartment, and did not distinguish between immune status. We chose to remove this distinction as it seemed somewhat arbitrary.
+We modified the @lanzas model and collapsed the colonized compartments into one colonized compartment, and did not distinguish between immune status. We chose to remove this distinction as it seemed somewhat arbitrary.
 
 ```{r graphs-new}
 data <- model.new %>% 
@@ -114,3 +119,6 @@ ggplot(data, aes(x=time, y=size)) +
     geom_line(aes(colour=compartment, linetype=compartment)) +
     ggtitle("Collapsed Colonized Compartments")
 ```
+
+# References {-}
+<!-- placeholder for References in toc --!>
