@@ -8,11 +8,18 @@ author:
 date: "`r format(Sys.time(), '%d %B %Y')`"
 bibliography: bibliography.bib
 abstract: |
-  We looked at the Lanzas paper that investigated C Diff in a health care setting. Since then, there have been updates to care in C Diff, and we updated our model to account for this.
+  We propose an extended compartmental model to explore the transmission dynamics of hospital-acquired _C. diff_. 
+  Our model will address the shortcomings of @lanzas by explicitly modeling transmission of _C. diff_. via health care workers and via the environment. 
+  Additionally, since @lanzas was published, treatment of these infections has significantly advanced and thus we will account for this innovation in our model. 
+  Some of the parameters for our model will be estimated from the literature. 
+  For these parameters, we will perform a sensitivity analysis to account for the uncertainty. 
+  Finally, we numerically solve a system of ordinary differential equations using the R statistical package to estimate the remaining transmission and timing parameters.
 
-  There was math and disease. We did some differential equations and some simulations.  Interest results that we found. It was really meaningful. Will change C Diff care forever.
 output: pdf_document
 documentclass: article
+header-includes:
+- \usepackage{tikz}
+- \usetikzlibrary{arrows, automata}
 ---
 \newpage
 
@@ -89,7 +96,36 @@ initial.state <- c(R=1e3, S=0, C=1e1, D=0)
 model.new <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
 ```
 
-The original model in @lanzas was written as
+# Introduction
+In @lanzas, the authors investigated the transmission dynamics of _Clostridium difficile_ (_C. diff._) using a compartmental model.
+_C. diff_ is the leading cause of infectious diarrhea in hospitals and is one of the most common causes of healthcare-acquired infections.
+_C. diff_ is a pathogenic bacteria that occasionally replaces the normal bacterial microbiota of a patient’s intestines following clearance by antibiotic treatment, resulting in a diarrheal illness.
+The paper highlights the importance of transmission to C. diff. burden in hospital settings, as the authors found that the transmission coefficients associated with colonized and/or symptomatically infected patients were significant drivers of whether $R_0$ was greater or less than 1.
+As the model makes some simplifying assumptions about transmission, the authors recommend that future models explicitly incorporate different routes of transmission.
+Moreover, with the emergence of fecal transplantation as curative therapy since publication, some of the model’s compartmental assumptions and parameter estimates surrounding treatment may need to be altered.
+
+The expansion of this model has significance to hospital epidemiology policy-setting in health care systems and hospitals globally.
+In the United States specifically, _C. diff._ represents a significant ongoing source of healthcare-associated infections, adding at least one billion dollars to the cost of healthcare every year and causing substantial patient morbidity (@stop-c-diff).
+Better understanding the dynamics of _C. diff._ transmission within hospital environments is critical to developing appropriate infection control strategies and, in turn, to reducing _C. diff_ burden.
+
+We believe that the expansions proposed in our model are necessary to achieve this objective.
+_C. diff._ is relatively unusual among bacterial pathogens, because it has the ability to form spores which are not killed by alcohol-based sanitizers.
+Somewhat parodoxically, therefore, although the transition from soap and water to alcohol sanitizers has increased hospital hand hygiene compliance (due to ease of use), it has likely accelerated transmission of _C. diff._ via healthcare workers.
+Moreover, since @lanzas was published, the environmental cleaning landscape in hospitals has evolved.
+The ongoing Ebola outbreak has heightened infection control awareness, and many hospitals have invested in gas- or UV-based apparatuses that can thoroughly decontaminate patient rooms.
+These devices, relative to historical environmental cleaning methods, are more efficacious against _C. diff._ spores.
+Consequently, modifying the original model to account for these changes and complexities is critical to accurately modeling the anticipated effects — or unintended consequences — of different infection control policies.
+
+Moreover, since 2011 fecal transplantation to restore endogenous flora has gained increasing acceptance as a curative therapy for _C. diff._
+To date, the majority of attention has focused on fecal transplantation’s clinical implications.
+However, it also fundamentally alters susceptible and recovery rates relative to conventional antibiotic-based regimens.
+These rates are directly relevant to _C. diff._ transmission dynamics but to our knowledge have not been modeled in the literature.
+
+We also read @pelupessy_2002.
+
+# Methods
+
+The original model in @lanzas was described by the following system of differential equations.
 $$
 \begin{aligned}
 \frac{dR}{dt}=a_r\delta N + \theta S - k_r R - \alpha R \\
@@ -101,7 +137,7 @@ $$
 N=R+S+C^{-}+C^{+}+D
 \end{aligned}
 $$
-We reran the model, but set delta equal to `r delta`.
+We reran the model, but set delta equal to `r delta` (deterministically).
 
 ```{r graphs-old}
 data <- model.old %>% 
@@ -115,6 +151,39 @@ ggplot(data, aes(x=time, y=size)) +
 ```
 
 We modified the @lanzas model and collapsed the colonized compartments into one colonized compartment, and did not distinguish between immune status. We chose to remove this distinction as it seemed somewhat arbitrary. It's not supported in the literature? Reference?
+
+\newpage
+
+We conceptualized our model in this framework. (Note that the parameters aren't final!
+
+\begin{center}
+    \begin{tikzpicture}[
+        > = stealth, % arrow head style
+        auto,
+        node distance = 3cm, % distance between nodes
+        semithick % line style
+        ]
+
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 4mm
+        ]
+
+        \node[state] (R) {Resistant};
+        \node[state] (S) [below of=R] {Susceptible};
+        \node[state] (C) [below of=S] {Colonized};
+        \node[state] (D) [right of=S] {Diseased};
+
+        \path[->] (R) edge node {$\alpha$} (S);
+        \path[->] (S) edge node {$\beta$} (R);
+        \path[->] (S) edge node {$\gamma$} (C);
+        \path[->] (C) edge node {$\epsilon$} (D);
+        \path[->] (D) edge node {$\theta$} (S);
+
+    \end{tikzpicture}
+\end{center}
 
 $$
 \begin{aligned}
@@ -138,6 +207,6 @@ ggplot(data, aes(x=time, y=size)) +
     ggtitle("Collapsed Colonized Compartments")
 ```
 
-We also read @pelupessy_2002.
+# Results
 
 # References

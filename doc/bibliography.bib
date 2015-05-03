@@ -9,6 +9,13 @@
     pages={553-561}
 },
 
+@misc{stop-c-diff,
+  author={Cdc.gov,},
+  title={CDC VitalSigns - Making Health Care Safer - Stopping C. difficile Infections},
+  url={http://www.cdc.gov/VitalSigns/Hai/StoppingCdifficile/},
+  year={2015}
+},
+
 @article{pelupessy_2002, 
     author={Pelupessy, I. and Bonten, M. J. M. and Diekmann, O.}, 
     title={How to assess the relative importance of different colonization routes of pathogens within hospital settings}, 
@@ -19,3 +26,34 @@
     year={2002},
     pages={5601-5605}
 }
+
+\begin{tikzpicture}[
+> = stealth, % arrow head style
+shorten > = 1pt, % don't touch arrow head to node
+auto,
+node distance = 3cm, % distance between nodes
+semithick % line style
+]
+
+\tikzstyle{every state}=[
+draw = black,
+thick,
+fill = white,
+minimum size = 4mm
+]
+
+\node[state] (s) {$s$};
+\node[state] (v1) [above right of=s] {$v_1$};
+\node[state] (v2) [right of=s] {$v_2$};
+\node[state] (v3) [below right of=s] {$v_2$};
+\node[state] (t) [right of=v2] {$t$};
+
+\path[->] (s) edge node {18} (v1);
+\path[->] (s) edge node {1} (v2);
+\path[->] (s) edge node {1} (v3);
+\path[->] (v2) edge node {2} (v1);
+\path[->] (v3) edge node {1} (v2);
+\path[->] (v1) edge node {20} (t);
+
+\draw[red, dashed] (1, 2) -- (1, -2);
+\end{tikzpicture}
