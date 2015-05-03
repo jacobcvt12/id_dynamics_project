@@ -10,10 +10,9 @@ bibliography: bibliography.bib
 abstract: |
   We looked at the Lanzas paper that investigated C Diff in a health care setting. Since then, there have been updates to care in C Diff, and we updated our model to account for this.
 
-  There was math and disease. We did some differential equations and some simulations.
-
-  Interest results that we found. It was really meaningful. Will change C Diff care forever.
+  There was math and disease. We did some differential equations and some simulations.  Interest results that we found. It was really meaningful. Will change C Diff care forever.
 output: pdf_document
+documentclass: article
 ---
 \newpage
 
