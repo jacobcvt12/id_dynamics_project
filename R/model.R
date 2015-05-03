@@ -41,7 +41,7 @@ dx.dt.orig <- function(t, y, param, delta=0) {
     return(list(c(dR, dS, dP, dC, dD)))
 }
 
-dx.dt.new <- function(t, y, param, delta=0) {
+dx.dt.new <- function(t, y, param, delta = 1e-1) {
     # current state
     R <- y["R"]
     S <- y["S"]
