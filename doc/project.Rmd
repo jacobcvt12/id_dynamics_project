@@ -139,5 +139,6 @@ ggplot(data, aes(x=time, y=size)) +
     ggtitle("Collapsed Colonized Compartments")
 ```
 
-# References {-}
-<!-- placeholder for References in toc --!>
+We also read @pelupessy_2002.
+
+# References
