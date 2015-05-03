@@ -49,32 +49,34 @@ dx.dt.new <- function(t, y, param, delta=0) {
     D <- y["D"]
 
     # params 
-    a.r <- param["a.r"]
+    a.r <- param["a.r"]   #all a's are respective admission proportion (delta is overall admit rate/N/day)
     a.s <- param["a.s"]
     a.cn <- param["a.cn"]
     a.cp <- param["a.cp"]
     a.d <- param["a.d"]
-    alpha <- param["alpha"]
-    theta <- param["theta"]
+    alpha <- param["alpha"]   # abx Rx rate in R (R -> S rate)
+    theta <- param["theta"]   #S -> R rate
     beta.c <- param["beta.c"]
-    beta.d <- param["beta.d"] 
-    epsilon <- param["epsilon"]
-    p <- param["p"]
-    phi <- param["phi"]
-    k.r <- param["k.r"]
-    k <- param["k"]
-    k.d <- param["k.d"]
+    beta.d <- param["beta.d"]   
+    epsilon <- param["epsilon"]   #abx Tx rate /day (for diseased)
+    e <- param["e"]   #fecal trsplt rate /day (diseased)
+    p <- param["p"]   #prob. of abx Tx success
+    rho <- param["rho"]   #prob. of fecal transplant success
+    phi <- param["phi"]   # disease rate/day in C
+    k.r <- param["k.r"]   # R d/c rate /day
+    k <- param["k"]   # S & C d/d rate 
+    k.d <- param["k.d"]   # D d/c rate
     
     lambda <- param["beta.c"] * C + 
-              param["beta.d"] * D
+              param["beta.d"] * D    # transmission (S -> C)
     N = R + S + C + D
 
     # ODEs
-    dR <- a.r * delta*N + theta*S - k.r*R - alpha * R
+    dR <- a.r * delta*N + theta*S + rho * e * D - k.r*R - alpha * R
     dS <- a.s * delta * N + alpha * R + p * epsilon * D - 
           theta * S - k * S - lambda * S
     dC <- a.cn * delta * N + lambda * S - phi * C - k * C
-    dD <- a.d * delta * N + phi * C - p * epsilon * D - k.d * D
+    dD <- a.d * delta * N + phi * C - p * epsilon * D - rho * e * D - k.d * D
 
     return(list(c(dR, dS, dC, dD)))
 }
