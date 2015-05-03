@@ -92,7 +92,15 @@ model.new <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
 
 The original model in @lanzas was written as
 $$
-\frac{dR}{dt}=a_r\delta N + \theta S - k_r R - \alpha R
+\begin{aligned}
+\frac{dR}{dt}=a_r\delta N + \theta S - k_r R - \alpha R \\
+\frac{dS}{dt}=a_s\delta N + \alpha R + p \epsilon D -\theta S - kS-\lambda S \\
+\frac{dC^{-}}{dt}=a_{cn}\delta N + (1-f) \lambda S - \psi C^{-} - kC^{-} \\
+\frac{dC^{+}}{dt}=a_{cp}\delta N + f\lambda S - kC^{+} \\
+\frac{dD}{dt}=a_d\delta N + \psi C^{-} - p\epsilon D - k_dD \\
+\lambda=\beta_c(C^{-}+C{+})+\beta_dD \\
+N=R+S+C^{-}+C^{+}+D
+\end{aligned}
 $$
 We reran the model, but set delta equal to `r delta`.
 
@@ -107,7 +115,18 @@ ggplot(data, aes(x=time, y=size)) +
     ggtitle("Old Model")
 ```
 
-We modified the @lanzas model and collapsed the colonized compartments into one colonized compartment, and did not distinguish between immune status. We chose to remove this distinction as it seemed somewhat arbitrary.
+We modified the @lanzas model and collapsed the colonized compartments into one colonized compartment, and did not distinguish between immune status. We chose to remove this distinction as it seemed somewhat arbitrary. It's not supported in the literature? Reference?
+
+$$
+\begin{aligned}
+\frac{dR}{dt}=a_r\delta N + \theta S - k_r R - \alpha R \\
+\frac{dS}{dt}=a_s\delta N + \alpha R + p \epsilon D -\theta S - kS-\lambda S \\
+\frac{dC}{dt}=a_{cn}\delta N + \lambda S - \psi C- kC \\
+\frac{dD}{dt}=a_d\delta N + \psi C- p\epsilon D - k_dD \\
+\lambda=\beta_cC+\beta_dD \\
+N=R+S+C+D
+\end{aligned}
+$$
 
 ```{r graphs-new}
 data <- model.new %>% 
