@@ -58,7 +58,9 @@ theta <- 0.033
 beta.c <- beta.d <- 0.007
 f <- 0.6
 epsilon <- 0.1
+e <- 0.01
 p <- 0.8
+rho <- 0.8
 phi <- 0.2
 k.r <- 0.33
 k <- 0.15
@@ -88,7 +90,8 @@ model.old <- lsoda(initial.state, times, dx.dt.orig, param, delta=delta)
 # parameter vector
 param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
-           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
+           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           e=e, rho=rho)
 
 # initial state
 initial.state <- c(R=1e3, S=0, C=1e1, D=0)
