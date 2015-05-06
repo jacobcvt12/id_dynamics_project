@@ -128,6 +128,10 @@ We also read @pelupessy_2002.
 
 # Methods
 
+## Data
+
+## Epidemiological Model
+
 The original model in @lanzas was described by the following system of differential equations.
 $$
 \begin{aligned}
@@ -141,17 +145,6 @@ N=R+S+C^{-}+C^{+}+D
 \end{aligned}
 $$
 We reran the model, but set delta equal to `r delta` (deterministically).
-
-```{r graphs-old}
-data <- model.old %>% 
-    data.frame() %>%
-    tbl_df() %>%
-    gather(compartment, size, R:D)
-
-ggplot(data, aes(x=time, y=size)) +
-    geom_line(aes(colour=compartment, linetype=compartment)) +
-    ggtitle("Old Model")
-```
 
 We modified the @lanzas model and collapsed the colonized compartments into one colonized compartment, and did not distinguish between immune status. We chose to remove this distinction as it seemed somewhat arbitrary. It's not supported in the literature? Reference?
 
@@ -175,15 +168,19 @@ We conceptualized our model in this framework. (Note that the parameters aren't 
         ]
 
         \node[state] (R) {Resistant};
-        \node[state] (S) [below of=R] {Susceptible};
-        \node[state] (C) [below of=S] {Colonized};
-        \node[state] (D) [right of=S] {Diseased};
+        \node[state] (S1) [below left of=R] {Susceptible 1};
+        \node[state] (S2) [below right of=R] {Susceptible 2};
+        \node[state] (C) [below left of=S2] {Colonized};
+        \node[state] (D) [below of=C] {Diseased};
 
-        \path[->] (R) edge node {$\alpha$} (S);
-        \path[->] (S) edge node {$\beta$} (R);
-        \path[->] (S) edge node {$\gamma$} (C);
+        \path[->] (R) edge node {$\alpha$} (S1);
+        \path[->] (R) edge node {$\alpha$} (S2);
+        \path[->] (S2) edge node {$\beta$} (R);
+        \path[->] (S1) edge node {$\gamma$} (C);
+        \path[->] (S2) edge node {$\gamma$} (C);
         \path[->] (C) edge node {$\epsilon$} (D);
-        \path[->] (D) edge node {$\theta$} (S);
+        \path[->] (D) edge node {$\theta$} (S1);
+        \path[->] (D) edge node {$\theta$} (S2);
 
     \end{tikzpicture}
 \end{center}
@@ -191,13 +188,28 @@ We conceptualized our model in this framework. (Note that the parameters aren't 
 $$
 \begin{aligned}
 \frac{dR}{dt}=a_r\delta N + \theta S - k_r R - \alpha R \\
-\frac{dS}{dt}=a_s\delta N + \alpha R + p \epsilon D -\theta S - kS-\lambda S \\
+\frac{dS1}{dt}=a_s\delta N + \alpha R + p \epsilon D -\theta S - kS-\lambda S \\
+\frac{dS2}{dt}=a_s\delta N + \alpha R + p \epsilon D -\theta S - kS-\lambda S \\
 \frac{dC}{dt}=a_{cn}\delta N + \lambda S - \psi C- kC \\
 \frac{dD}{dt}=a_d\delta N + \psi C- p\epsilon D - k_dD \\
 \lambda=\beta_cC+\beta_dD \\
 N=R+S+C+D
 \end{aligned}
 $$
+
+## Parameterization
+
+# Results
+```{r graphs-old}
+data <- model.old %>% 
+    data.frame() %>%
+    tbl_df() %>%
+    gather(compartment, size, R:D)
+
+ggplot(data, aes(x=time, y=size)) +
+    geom_line(aes(colour=compartment, linetype=compartment)) +
+    ggtitle("Old Model")
+```
 
 ```{r graphs-new}
 data <- model.new %>% 
@@ -210,6 +222,6 @@ ggplot(data, aes(x=time, y=size)) +
     ggtitle("Collapsed Colonized Compartments")
 ```
 
-# Results
+# Discussion
 
 # References
