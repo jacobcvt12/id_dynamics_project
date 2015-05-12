@@ -199,6 +199,17 @@ $$
 
 ## Parameterization
 
+## Next Generation Matrix
+http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1578275/pdf/rsif20050042.pdf
+http://web.stanford.edu/~jhj1/teachingdocs/Jones-on-R0.pdf
+http://daphnia.ecology.uga.edu/ceesg/wp-content/uploads/2013/12/nextgen.pdf
+http://rsif.royalsocietypublishing.org/content/royinterface/7/47/873.full.pdf
+
+Recommended by Derek
+http://www.luchsinger-mathematics.ch/vandenDriessche-R0Compartmental-2002.pdf
+
+
+
 # Results
 ```{r graphs-old}
 data <- model.old %>% 
