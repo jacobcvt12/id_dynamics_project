@@ -133,7 +133,8 @@ stochastic.dx.dt <- function(step.size, y, param) {
     return(list(changes=c(dR, dS, dP, dC, dD),
                 colonizations=(col.minus + col.plus),
                 resistant.again=col.rs))
-    
+}
+
     stochastic.dx.dt.new <- function(step.size, y, param) {
       R <- y["R"]
       S.abx <- y["S.abx"]
@@ -193,7 +194,7 @@ stochastic.dx.dt <- function(step.size, y, param) {
       dis.dis <- rbinom(1, D, p.dis.dis)
       
       # deltas for compartments
-      dR <- -anti.tx + col.res,abx + col.res.ft - res.dis
+      dR <- -anti.tx + col.res.abx + col.res.ft - res.dis
       dS.abx <- anti.tx - col.res.abx - sus.abx.dis - col.abx + tx.suc.abx
       dS.ft <- col.res.ft - sus.ft.dis - col.ft + tx.suc.ft
       dC <- col.abx + col.ft - disease - col.dis
