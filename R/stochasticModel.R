@@ -241,13 +241,13 @@ stochastic.dx.dt <- function(step.size, y, param) {
       p.tx.suc.ft <- 1 - exp(-step.size * param["rho"] * param["e"] * param["tau"])
       
       # col after antibiotics
-      p.col.abx <- 1 - exp(-step.size * lambda * S.abx)
+      p.col.abx <- 1 - exp(-step.size * lambda)
       
       # col after fecal transplant
-      p.col.ft <- 1 - exp(-step.size * lambda * S.ft)
+      p.col.ft <- 1 - exp(-step.size * lambda)
       
       # disease in colonized
-      p.disease <- 1 - exp(-step.size * param["phi"] * C)
+      p.disease <- 1 - exp(-step.size * param["phi"])
       
       # discharge rates
       p.res.dis <- 1 - exp(-step.size * param["k.r"])
