@@ -45,6 +45,7 @@ theme_set(theme_classic())
 
 # programs
 source("../R/model.R")
+source("../R/stochasticModel.R")
 ```
 
 ```{r params}
@@ -211,6 +212,7 @@ http://www.luchsinger-mathematics.ch/vandenDriessche-R0Compartmental-2002.pdf
 
 
 # Results
+## Comparison of Baseline Differential Equations
 ```{r graphs-old}
 data <- model.old %>% 
     data.frame() %>%
@@ -232,6 +234,30 @@ ggplot(data, aes(x=time, y=size)) +
     geom_line(aes(colour=compartment, linetype=compartment)) +
     ggtitle("Collapsed Colonized Compartments")
 ```
+
+## Simulation
+```{r simulation-lanzas}
+simulations <- 1e3
+
+param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
+           theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
+           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
+
+# initial state
+initial.state <- c(R=1e3, S=0, P=0, C=1e1, D=0)
+
+lanzas.attack.rate <- stochastic.sim(param, initial.state,
+                                     stochastic.dx.dt)
+```
+
+```{r simulation-new}
+new.attack.rate <- lanzas.attack.rate
+```
+
+We ran `r simulations` and we saw an attack rate of 
+`r lanzas.attack.rate[2]` (95% CI `r lanzas.attack.rate[c(1, 3)]`) and
+`r new.attack.rate[2]` (95% CI `r new.attack.rate[c(1, 3)]`) in the 
+original model and new model respectively.
 
 # Discussion
 
