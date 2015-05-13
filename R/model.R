@@ -76,9 +76,9 @@ dx.dt.new <- function(t, y, param, delta = 1e-1) {
 
     # ODEs
     dR <- a.r * delta*N + theta.abx*S.abx + theta.ft * S.ft - k.r*R - alpha * R
-    dS.ft <- a.s.ft * delta * N + p * epsilon * D * (1-tau) - 
+    dS.ft <- a.s.ft * delta * N + rho * e * D * tau - 
            theta.ft * S.ft - k * S.ft - lambda * S.ft
-    dS.abx <- a.s.abx * delta * N + alpha * R + rho * e * D * tau - 
+    dS.abx <- a.s.abx * delta * N + alpha * R + p * epsilon * D * (1-tau) - 
            theta.abx * S.abx - k * S - lambda * S.abx
     dC <- a.c * delta * N + lambda * S.abx + lambda * S.ft - phi * C - k * C
     dD <- a.d * delta * N + phi * C - p * epsilon * D * (1-tau) - rho * e * D * tau - k.d * D
