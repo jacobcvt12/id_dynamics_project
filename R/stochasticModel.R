@@ -87,13 +87,13 @@ stochastic.dx.dt <- function(step.size, y, param) {
     p.tx.suc <- 1 - exp(-step.size * param["p"] * param["epsilon"])
 
     # col w/o immune response
-    p.col.minus <- 1 - exp(-step.size * (1 - param["f"]) * lambda * S)
+    p.col.minus <- 1 - exp(-step.size * (1 - param["f"]) * lambda)
 
     # col w/ immune reponse
-    p.col.plus <- 1 - exp(-step.size * param["f"] * lambda * S)
+    p.col.plus <- 1 - exp(-step.size * param["f"] * lambda)
 
     # disease
-    p.disease <- 1 - exp(-step.size * param["phi"] * C)
+    p.disease <- 1 - exp(-step.size * param["phi"])
 
     # discharge rates
     p.res.dis <- 1 - exp(-step.size * param["k.r"])
