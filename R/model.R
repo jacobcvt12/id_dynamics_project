@@ -52,7 +52,6 @@ dx.dt.new <- function(t, y, param, delta = 1e-1) {
     # params 
     a.r <- param["a.r"]   #all a's are respective admission proportion (delta is overall admit rate/N/day)
     a.s.abx <- param["a.s.abx"]
-    a.s.ft <- param["a.s.ft"]
     a.c <- param["a.c"]
     a.d <- param["a.d"]
     alpha <- param["alpha"]   # abx Rx rate in R (community) (R -> S rate)
