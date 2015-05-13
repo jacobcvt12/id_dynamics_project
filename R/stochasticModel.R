@@ -117,7 +117,7 @@ stochastic.dx.dt <- function(step.size, y, param) {
 
     # deltas for compartments
     dR <- -anti.tx + col.rs - res.dis
-    dS <- anti.tx - col.rs - sus.dis - col.minus - col.plus
+    dS <- anti.tx - col.rs - sus.dis - col.minus - col.plus + tx.suc
     dC <- col.minus - disease - c.min.dis
     dP <- col.plus - c.plu.dis
     dD <- disease - tx.suc - dis.dis
