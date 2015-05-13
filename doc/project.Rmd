@@ -89,10 +89,10 @@ model.old <- lsoda(initial.state, times, dx.dt.orig, param, delta=delta)
 
 ```{r new-model, eval=FALSE}
 # parameter vector
-param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
-           theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
+param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
+           theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
            epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d,
-           e=e, rho=rho)
+           e=e, rho=rho, tau=tau)
 
 # initial state
 initial.state <- c(R=1e3, S=0, C=1e1, D=0)
