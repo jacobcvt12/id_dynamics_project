@@ -87,7 +87,7 @@ initial.state <- c(R=1e3, S=0, P=0, C=1e1, D=0)
 model.old <- lsoda(initial.state, times, dx.dt.orig, param, delta=delta)
 ```
 
-```{r new-model}
+```{r new-model, eval=FALSE}
 # parameter vector
 param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
@@ -188,11 +188,11 @@ We conceptualized our model in this framework. (Note that the parameters aren't 
 
 $$
 \begin{aligned}
-\frac{dR}{dt}=a_r\delta N + \theta S - k_r R - \alpha R \\
-\frac{dS1}{dt}=a_s\delta N + \alpha R + p \epsilon D -\theta S - kS-\lambda S \\
-\frac{dS2}{dt}=a_s\delta N + \alpha R + p \epsilon D -\theta S - kS-\lambda S \\
-\frac{dC}{dt}=a_{cn}\delta N + \lambda S - \psi C- kC \\
-\frac{dD}{dt}=a_d\delta N + \psi C- p\epsilon D - k_dD \\
+\frac{dR}{dt}=a_r\delta N + \theta_a S_a + \theta_f S_f - k_r R - \alpha R \\
+\frac{dS_f}{dt}=\alpha R + \rho e D \tau -\theta_f S_f - kS_f-\lambda S_f \\
+\frac{dS_a}{dt}=a_s\delta N + \alpha R + p \epsilon D (1 - \tau) -\theta_a S_a - kS_a-\lambda S \\
+\frac{dC}{dt}=a_{cn}\delta N + \lambda S_a + \lambda S_f - \psi C- kC \\
+\frac{dD}{dt}=a_d\delta N + \psi C - p\epsilon D(1 - \tau) - \rho e D \tau - k_dD \\
 \lambda=\beta_cC+\beta_dD \\
 N=R+S+C+D
 \end{aligned}
@@ -224,7 +224,7 @@ ggplot(data, aes(x=time, y=size)) +
     ggtitle("Old Model")
 ```
 
-```{r graphs-new}
+```{r graphs-new, eval=FALSE}
 data <- model.new %>% 
     data.frame() %>%
     tbl_df() %>%
