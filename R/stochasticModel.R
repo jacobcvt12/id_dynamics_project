@@ -134,3 +134,81 @@ stochastic.dx.dt <- function(step.size, y, param) {
                 colonizations=(col.minus + col.plus),
                 resistant.again=col.rs))
 }
+    
+    stochastic.dx.dt.new <- function(step.size, y, param) {
+      R <- y["R"]
+      S.abx <- y["S.abx"]
+      S.ft <- y["S.ft"]
+      C <- y["C"]
+      D <- y["D"]
+      
+      # calculate lambda
+      lambda <- param["beta.c"] * C + 
+        param["beta.d"] * D
+      ## probabilities
+      
+      # antibiotic treatment in resistant
+      p.anti.tx <- 1 - exp(-step.size * param["alpha"])
+      
+      # restoration of colonization resistance after antibiotics
+      p.col.res.abx <- 1 - exp(-step.size * param["theta.abx"])
+      
+      # restoration of colonization resistance after fecal transplant
+      p.col.res.ft <- 1 - exp(-step.size * param["theta.ft"])
+      
+      # antibiotic treatment success (in diseased)
+      p.tx.suc.abx <- 1 - exp(-step.size * param["p"] * param["epsilon"] * (1 - param["tau"]))
+      
+      # fecal transplant treatment success
+      p.tx.suc.ft <- 1 - exp(-step.size * param["rho"] * param["e"] * param["tau"])
+      
+      # col after antibiotics
+      p.col.abx <- 1 - exp(-step.size * lambda * S.abx)
+      
+      # col after fecal transplant
+      p.col.ft <- 1 - exp(-step.size * lambda * S.ft)
+      
+      # disease in colonized
+      p.disease <- 1 - exp(-step.size * param["phi"] * C)
+      
+      # discharge rates
+      p.res.dis <- 1 - exp(-step.size * param["k.r"])
+      p.sus.ft.dis <- 1 - exp(-step.size * param["k"])
+      p.col.dis <- p.sus.abx.dis <- p.sus.ft.dis
+      p.dis.dis <- 1 - exp(-step.size * param["k.d"])
+      
+      # calculate changes across compartments
+      anti.tx <- rbinom(1, R, p.anti.tx)
+      col.res.abx <- rbinom(1, S.abx, p.col.res.abx)
+      col.res.ft <- rbinom(1, S.ft, p.col.res.ft)
+      tx.suc.abx <- rbinom(1, D, p.tx.suc.abx)
+      tx.suc.ft <- rbinom(1, D, p.tx.suc.ft)
+      col.abx <- rbinom(1, S.abx, p.col.abx)
+      col.ft <- rbinom(1, S.ft, p.col.ft)
+      disease <- rbinom(1, C, p.disease)
+      
+      res.dis <- rbinom(1, R, p.res.dis)
+      sus.abx.dis <- rbinom(1, S, p.sus.abx.dis)
+      sus.ft.dis <- rbinom(1, S, p.sus.ft.dis)
+      col.dis <- rbinom(1, C, p.col.dis)
+      dis.dis <- rbinom(1, D, p.dis.dis)
+      
+      # deltas for compartments
+      dR <- -anti.tx + col.res.abx + col.res.ft - res.dis
+      dS.abx <- anti.tx - col.res.abx - sus.abx.dis - col.abx + tx.suc.abx
+      dS.ft <- col.res.ft - sus.ft.dis - col.ft + tx.suc.ft
+      dC <- col.abx + col.ft - disease - col.dis
+      dD <- disease - tx.suc.abx - tx.suc.ft - dis.dis
+      
+      # make sure none of the deltas are bigger than the prev comp size
+      dR <- max(dR, -R)
+      dS.abx <- max(dS.abx, -S.abx)
+      dS.ft <- max(dS.ft, -S.ft)
+      dC <- max(dC, -C)
+      dD <- max(dD, -D)
+      
+      # careful! need to return in same order as y
+      return(list(changes=c(dR, dS.abx, dS.ft, dC, dD),
+                  colonizations=(col.abx + col.ft),
+                  resistant.again=col.res.abx + col.res.ft))
+}
