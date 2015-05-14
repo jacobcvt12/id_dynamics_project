@@ -30,7 +30,7 @@ stochastic.run <- function(param, initial.state,
 
     # consider are "susceptibles" to be the resistant and 
     # to start
-    uninf <- sum(y[c("R", "S")])
+    uninf <- sum(y[c("R", "S", "S.abx", "S.ft")], na.rm=TRUE)
 
     # any initial diseased people are not initially counted
     inf <- 0
@@ -135,7 +135,7 @@ stochastic.dx.dt <- function(step.size, y, param) {
                 resistant.again=col.rs))
 }
 
-    stochastic.dx.dt.new <- function(step.size, y, param) {
+stochastic.dx.dt.new <- function(step.size, y, param) {
       R <- y["R"]
       S.ft <- y["S.ft"]
       S.abx <- y["S.abx"]
@@ -208,7 +208,7 @@ stochastic.dx.dt <- function(step.size, y, param) {
       dD <- max(dD, -D)
       
       # careful! need to return in same order as y
-      return(list(changes=c(dR, dS.ft, dS.abx, dC, dD),
+      return(list(changes=c(dR, dS.abx, dS.ft, dC, dD),
                   colonizations=(col.ft + col.abx),
                   resistant.again=col.res.ft + col.res.abx))
 }
