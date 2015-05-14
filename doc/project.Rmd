@@ -41,7 +41,7 @@ source("../R/stochasticModel.R")
 ```{r params}
 # parameters
 a.r <- 0.75
-a.s <- 0.22
+a.s <- a.s.abx <- 0.22
 a.cn <- a.cp <- a.c <- 0.01
 a.d <- 0.01
 alpha <- 0.5
@@ -50,11 +50,11 @@ theta.abx <- 0.033
 theta.ft <- 0.033
 beta.c <- beta.d <- 0.007
 f <- 0.6
-epsilon <- 0.1
-e <- 0.01
-p <- 0.8
-rho <- 0.8
-tau <- 0.1
+epsilon.abx <- 0.1
+epsilon.ft <- 0.01
+p.abx <- 0.8
+p.ft <- 0.8
+psi <- 0.1
 phi <- 0.2
 k.r <- 0.33
 k <- 0.15
@@ -84,8 +84,8 @@ model.old <- lsoda(initial.state, times, dx.dt.orig, param, delta=delta)
 # parameter vector
 param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
            theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
-           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d,
-           e=e, rho=rho, tau=tau)
+           epsilon.abx=epsilon.abx, p.abx=p.abx, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           epsilon.ft=epsilon.ft, p.ft=p.ft, psi=psi)
 
 # initial state
 initial.state <- c(R=1e3, S=0, C=1e1, D=0)
@@ -273,12 +273,12 @@ Please fix this Jacob! From, Jacob.
 $$
 \begin{aligned}
 \frac{dR}{dt}=a_r\delta N + \theta_a S_a + \theta_f S_f - k_r R - \alpha R \\
-\frac{dS_f}{dt}=\alpha R + \rho e D \tau -\theta_f S_f - kS_f-\lambda S_f \\
-\frac{dS_a}{dt}=a_s\delta N + \alpha R + p \epsilon D (1 - \tau) -\theta_a S_a - kS_a-\lambda S \\
-\frac{dC}{dt}=a_{cn}\delta N + \lambda S_a + \lambda S_f - \psi C- kC \\
-\frac{dD}{dt}=a_d\delta N + \psi C - p\epsilon D(1 - \tau) - \rho e D \tau - k_dD \\
+\frac{dS_f}{dt}=\p_f epsilon_f D \psi -\theta_f S_f - kS_f-\lambda S_f \\
+\frac{dS_a}{dt}=a_s\delta N + \alpha R + p_a \epsilon_a D (1 - \psi) -\theta_a S_a - kS_a-\lambda S_a \\
+\frac{dC}{dt}=a_{c}\delta N + \lambda S_a + \lambda S_f - \phi C- kC \\
+\frac{dD}{dt}=a_d\delta N + \phi C - p_a\epsilon_a D(1 - \psi) - \p_f epsilon_f D \psi - k_dD \\
 \lambda=\beta_cC+\beta_dD \\
-N=R+S+C+D
+N=R+S_f+S_a+C+D
 \end{aligned}
 $$
 
@@ -334,8 +334,8 @@ simulations <- 1e3
 
 param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
            theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
-           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d,
-           e=e, rho=rho, tau=tau)
+           epsilon.abx=epsilon.abx, p.abx=p.abx, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           epsilon.ft=epsilon.ft, p.ft=p.ft, psi=psi)
 
 # initial state
 initial.state <- c(R=1e3, S.abx=0, S.ft=0, C=1e1, D=0)
