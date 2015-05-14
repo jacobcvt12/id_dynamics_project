@@ -93,6 +93,19 @@ initial.state <- c(R=1e3, S.ft=0, S.abx=0, C=1e1, D=0)
 model.new <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
 ```
 
+```{r new-model-valid}
+# parameter vector
+param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
+           theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
+           epsilon.abx=epsilon.abx, p.abx=p.abx, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           epsilon.ft=epsilon.ft, p.ft=p.ft, psi=0)
+
+# initial state
+initial.state <- c(R=1e3, S.ft=0, S.abx=0, C=1e1, D=0)
+
+model.new.valid <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
+```
+
 # Introduction
 *Clostridium difficile* (*C. difficile*) infection (CDI) represents the
 most common healthcare-acquired infection in the United States (Lessa,
@@ -204,6 +217,8 @@ generation matrix]
 In order to estimate $R_0$, we derived the Next Generation Matrix for this 
 compartmental model, as described in @ngm.
 
+This needs to be updated from SymPy program!
+
 We derive F as
 $$
 \left[\begin{matrix}\beta_{c} \left(S_{a_0} + S_{f_0}\right) & \beta_{d} \left(S_{a_0} + S_{f_0}\right)\\0 & 0\end{matrix}\right]
@@ -286,22 +301,32 @@ $$
 
 # Results
 ## Comparison of Baseline Differential Equations
-```{r graphs-old}
-data <- model.old %>% 
+```{r graphs-1}
+data.old <- model.old %>% 
     data.frame() %>%
     tbl_df() %>%
-    gather(compartment, size, R:D)
+    gather(compartment, size, R:D) %>%
+    mutate(model="Lanzas")
 
-ggplot(data, aes(x=time, y=size)) +
+data.new <- model.new %>% 
+    data.frame() %>%
+    tbl_df() %>%
+    gather(compartment, size, R:D) %>%
+    mutate(model="New")
+
+data.new.valid <- model.new.valid %>%
+    data.frame() %>%
+    tbl_df() %>%
+    gather(compartment, size, R:D) %>%
+    mutate(model="Validation")
+
+ggplot(bind_rows(data.old, data.new, data.new.valid), aes(x=time, y=size)) +
     geom_line(aes(colour=compartment, linetype=compartment)) +
-    ggtitle("Old Model")
+    ggtitle("Deterministic Model Comparison") +
+    facet_wrap(~model)
 ```
 
-```{r graphs-new, eval=FALSE}
-data <- model.new %>% 
-    data.frame() %>%
-    tbl_df() %>%
-    gather(compartment, size, R:D)
+```{r graphs-new}
 
 ggplot(data, aes(x=time, y=size)) +
     geom_line(aes(colour=compartment, linetype=compartment)) +
@@ -330,8 +355,6 @@ lanzas.attack.rate <- stochastic.sim(param, initial.state,
 ```
 
 ```{r simulation-new}
-simulations <- 1e3
-
 param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
            theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
            epsilon.abx=epsilon.abx, p.abx=p.abx, phi=phi, k.r=k.r, k=k, k.d=k.d,
