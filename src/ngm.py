@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-from sympy import Symbol, diff, latex, pprint
+from sympy import Symbol, diff, latex, symbols, Eq, solve
 from sympy.matrices import Matrix
 
 # symbols
@@ -54,3 +54,12 @@ print(latex(A))
 
 print("eigenvalues")
 print(latex(R_0))
+
+# DFE
+a_r, delta, N, theta, S, k_r, R, alpha = \
+    symbols('a_r, delta, N, theta, S, k_r, R, alpha')
+a_s, p, epsilon, D, k, beta_c, C_min, C_plu, beta_d = \
+    symbols('a_s, p, epsilon, D, k, beta_c, C_min, C_plu, beta_d')
+
+sys1 = Eq(a_r * delta * N + theta * S - k_r * R - alpha * R, 0)
+sys2 = Eq(a_s * delta * N + alpha * R- theta * S - k * S, 0)
