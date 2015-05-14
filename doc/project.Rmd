@@ -52,16 +52,19 @@ source("../R/stochasticModel.R")
 # parameters
 a.r <- 0.75
 a.s <- 0.22
-a.cn <- a.cp <- 0.01
+a.cn <- a.cp <- a.c <- 0.01
 a.d <- 0.01
 alpha <- 0.5
 theta <- 0.033
+theta.abx <- 0.033
+theta.ft <- 0.033
 beta.c <- beta.d <- 0.007
 f <- 0.6
 epsilon <- 0.1
 e <- 0.01
 p <- 0.8
 rho <- 0.8
+tau <- 0.1
 phi <- 0.2
 k.r <- 0.33
 k <- 0.15
@@ -151,7 +154,7 @@ We modified the @lanzas model and collapsed the colonized compartments into one 
 
 \newpage
 
-We conceptualized our model in this framework. (Note that the parameters aren't final!
+We conceptualized our model in this framework. (Note that the parameters aren't final!)
 
 \begin{center}
     \begin{tikzpicture}[
@@ -251,7 +254,18 @@ lanzas.attack.rate <- stochastic.sim(param, initial.state,
 ```
 
 ```{r simulation-new}
-new.attack.rate <- lanzas.attack.rate
+simulations <- 1e3
+
+param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
+           theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
+           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           e=e, rho=rho, tau=tau)
+
+# initial state
+initial.state <- c(R=1e3, S.abx=0, S.ft=0, C=1e1, D=0)
+
+new.attack.rate <- stochastic.sim(param, initial.state,
+                                     stochastic.dx.dt.new)
 ```
 
 We ran `r simulations` and we saw an attack rate of 
