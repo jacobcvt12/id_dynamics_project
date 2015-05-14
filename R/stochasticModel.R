@@ -163,10 +163,10 @@ stochastic.dx.dt <- function(step.size, y, param) {
       p.tx.suc.abx <- 1 - exp(-step.size * param["p.abx"] * param["epsilon.abx"] * (1 - param["psi"]))
       
       # col after fecal transplant
-      p.col.ft <- p.col.abx
+      p.col.ft <- 1 - exp(-step.size * lambda)
       
       # col after antibiotics
-      p.col.abx <- 1 - exp(-step.size * lambda)
+      p.col.abx <-  p.col.ft
       
       # disease in colonized
       p.disease <- 1 - exp(-step.size * param["phi"])

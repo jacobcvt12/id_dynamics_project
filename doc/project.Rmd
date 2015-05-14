@@ -50,9 +50,9 @@ theta.abx <- 0.033
 theta.ft <- 0.033
 beta.c <- beta.d <- 0.007
 f <- 0.6
-epsilon.abx <- 0.1
+epsilon <- epsilon.abx <- 0.1
 epsilon.ft <- 0.01
-p.abx <- 0.8
+p <- p.abx <- 0.8
 p.ft <- 0.8
 psi <- 0.1
 phi <- 0.2
@@ -88,7 +88,7 @@ param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
            epsilon.ft=epsilon.ft, p.ft=p.ft, psi=psi)
 
 # initial state
-initial.state <- c(R=1e3, S=0, C=1e1, D=0)
+initial.state <- c(R=1e3, S.ft=0, S.abx=0, C=1e1, D=0)
 
 model.new <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
 ```
