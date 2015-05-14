@@ -25,13 +25,6 @@ knitr::opts_chunk$set(echo=FALSE,
                       message=FALSE)
 ```
 
-```{r runme, eval=FALSE}
-# run this line to create the PDF!
-# you might have to change the path 
-# i.e. "~/Documents/grad-school-sucks/project.Rmd"
-# rmarkdown::render("doc/project.Rmd")
-```
-
 ```{r libs}
 # libraries
 library(deSolve)
@@ -49,16 +42,19 @@ source("../R/stochasticModel.R")
 # parameters
 a.r <- 0.75
 a.s <- 0.22
-a.cn <- a.cp <- 0.01
+a.cn <- a.cp <- a.c <- 0.01
 a.d <- 0.01
 alpha <- 0.5
 theta <- 0.033
+theta.abx <- 0.033
+theta.ft <- 0.033
 beta.c <- beta.d <- 0.007
 f <- 0.6
 epsilon <- 0.1
 e <- 0.01
 p <- 0.8
 rho <- 0.8
+tau <- 0.1
 phi <- 0.2
 k.r <- 0.33
 k <- 0.15
@@ -84,12 +80,12 @@ initial.state <- c(R=1e3, S=0, P=0, C=1e1, D=0)
 model.old <- lsoda(initial.state, times, dx.dt.orig, param, delta=delta)
 ```
 
-```{r new-model, eval=FALSE}
+```{r new-model}
 # parameter vector
-param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
-           theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
+param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
+           theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
            epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d,
-           e=e, rho=rho)
+           e=e, rho=rho, tau=tau)
 
 # initial state
 initial.state <- c(R=1e3, S=0, C=1e1, D=0)
@@ -235,6 +231,9 @@ Where $S_{a_0}$ and $S_{f_0}$ are the two susceptible compartments at baseline.
 **Figure 1: Model Diagram of *Clostridium difficile* transmission in a
 hospital environment**
 
+We conceptualized our model in this framework. (Note that the parameters aren't final!)
+Please fix this Jacob! From, Jacob.
+
 \begin{center}
     \begin{tikzpicture}[
         > = stealth, % arrow head style
@@ -331,7 +330,18 @@ lanzas.attack.rate <- stochastic.sim(param, initial.state,
 ```
 
 ```{r simulation-new}
-new.attack.rate <- lanzas.attack.rate
+simulations <- 1e3
+
+param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
+           theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
+           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           e=e, rho=rho, tau=tau)
+
+# initial state
+initial.state <- c(R=1e3, S.abx=0, S.ft=0, C=1e1, D=0)
+
+new.attack.rate <- stochastic.sim(param, initial.state,
+                                  stochastic.dx.dt.new)
 ```
 
 We ran `r simulations` and we saw an attack rate of 

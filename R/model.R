@@ -44,15 +44,14 @@ dx.dt.orig <- function(t, y, param, delta=0) {
 dx.dt.new <- function(t, y, param, delta = 1e-1) {
     # current state
     R <- y["R"]
-    S.a <- y["S.abx"]
-    S.f <- y["S.ft"]
+    S.ft <- y["S.ft"]
+    S.abx <- y["S.abx"]
     C <- y["C"]
     D <- y["D"]
 
     # params 
     a.r <- param["a.r"]   #all a's are respective admission proportion (delta is overall admit rate/N/day)
     a.s.abx <- param["a.s.abx"]
-    a.s.ft <- param["a.s.ft"]
     a.c <- param["a.c"]
     a.d <- param["a.d"]
     alpha <- param["alpha"]   # abx Rx rate in R (community) (R -> S rate)
@@ -60,11 +59,11 @@ dx.dt.new <- function(t, y, param, delta = 1e-1) {
     theta.ft <- param["theta.ft"]   #S.ft -> R rate
     beta.c <- param["beta.c"]
     beta.d <- param["beta.d"]   
-    epsilon <- param["epsilon"]   #abx Tx rate /day (for diseased)
-    e <- param["e"]   #fecal trsplt rate /day (diseased)
-    p <- param["p"]   #prob. of abx Tx success
-    rho <- param["rho"]   #prob. of fecal transplant success
-    tau <- param["tau"]   # proportion of patients (D) receiving fecal transplant 
+    epsilon.abx <- param["epsilon.abx"]   #abx Tx rate /day (for diseased)
+    epsilon.ft <- param["epsilon.ft"]   #fecal trsplt rate /day (diseased)
+    p.abx <- param["p.abx"]   #prob. of abx Tx success
+    p.ft <- param["p.ft"]   #prob. of fecal transplant success
+    psi <- param["psi"]   # proportion of patients (D) receiving fecal transplant 
     phi <- param["phi"]   # disease rate/day in C
     k.r <- param["k.r"]   # R dc rate /day
     k <- param["k"]   # S & C dc rate 
@@ -75,13 +74,13 @@ dx.dt.new <- function(t, y, param, delta = 1e-1) {
     N = R + S.abx + S.ft + C + D
 
     # ODEs
-    dR <- a.r * delta*N + theta.abx*S.abx + theta.ft * S.ft - k.r*R - alpha * R
-    dS.ft <- a.s.ft * delta * N + rho * e * D * tau - 
+    dR <- a.r * delta*N + theta.abx*S.abx + theta.ft * S.ft - k.r * R - alpha * R
+    dS.ft <- p.ft * epsilon.ft * D * psi - 
            theta.ft * S.ft - k * S.ft - lambda * S.ft
-    dS.abx <- a.s.abx * delta * N + alpha * R + p * epsilon * D * (1-tau) - 
-           theta.abx * S.abx - k * S - lambda * S.abx
+    dS.abx <- a.s.abx * delta * N + alpha * R + p.abx * epsilon.abx * D * (1-psi) - 
+           theta.abx * S.abx - k * S.abx - lambda * S.abx
     dC <- a.c * delta * N + lambda * S.abx + lambda * S.ft - phi * C - k * C
-    dD <- a.d * delta * N + phi * C - p * epsilon * D * (1-tau) - rho * e * D * tau - k.d * D
+    dD <- a.d * delta * N + phi * C - p.abx * epsilon.abx * D * (1-psi) - p.ft * epsilon.ft * D * psi - k.d * D
 
-    return(list(c(dR, dS, dC, dD)))
+    return(list(c(dR, dS.ft, dS.abx, dC, dD)))
 }
