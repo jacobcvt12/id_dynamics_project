@@ -1,5 +1,5 @@
 ---
-title: "C Diff and Math!"
+title: "Beyond Treatment: Modeling the Transmission Implications of Fecal Transplant for Clostridium Difficile Infection in Health-Care Settings"
 author:
 - Jacob Carey
 - Sarah Cox
@@ -8,13 +8,10 @@ author:
 date: "`r format(Sys.time(), '%d %B %Y')`"
 bibliography: bibliography.bib
 abstract: |
-  We propose an extended compartmental model to explore the transmission dynamics of hospital-acquired _C. diff_. 
-  Our model will address the shortcomings of @lanzas by explicitly modeling transmission of _C. diff_. via health care workers and via the environment. 
-  Additionally, since @lanzas was published, treatment of these infections has significantly advanced and thus we will account for this innovation in our model. 
-  Some of the parameters for our model will be estimated from the literature. 
-  For these parameters, we will perform a sensitivity analysis to account for the uncertainty. 
-  Finally, we numerically solve a system of ordinary differential equations using the R statistical package to estimate the remaining transmission and timing parameters.
-
+  **Objective —** In “Epidemiological Model for *Clostridium Difficile* Transmission in Health-Care Settings,” published by Lanzas et al. in 2011, the authors developed a compartmental mathematical model of *C.  difficile* nosocomial transmission (the “*Lanzas* model”). The paper highlights the importance of patient-patient transmission to *C.  difficile* burden in hospital settings, as the authors found that the transmission coefficients associated with colonized and/or symptomatically diseased patients were significant drivers of whether R0 was greater or less than 1. Since publication, however, fecal transplantation to restore endogenous flora has gained increasing acceptance as a curative therapy for *C. difficile*. To date, the majority of attention has focused on fecal transplantation’s clinical implications, but it also fundamentally alters susceptibility and recovery rates relative to conventional antibiotic-based regimens. These rates are directly relevant to *C. difficile* transmission dynamics, in particular transmission from symptomatically diseased patients, but to our knowledge have not been modeled in the literature. Our objective was to update the *Lanzas* model to incorporate fecal transplant as an alternative to antibiotic treatment in order to evaluate resulting effects on *C. difficile* hospital-based transmission.  
+  **Design —** Retrospective cohort.  
+  **Setting and Patients —** All patients admitted to the medical wards at a large tertiary care hospital in the United States between January 1 and December 31, 2008 (underlying study cohort of Lanzas *et al.*, 2011).  
+  **Methods —** The *Lanzas* model was modified to include fecal transplant, in addition to antibiotic therapy, as treatment for *C.  difficile* infection (CDI). To incorporate fecal transplant, we altered the original model in two primary ways: (1) Collapse of the two asymptomatically colonized states, C^-^ and C^+^ (with and without protection against CDI), into a single colonized state, C; and (2) Expansion of the single “susceptible to colonization” state, S, into separate compartments: “susceptible to colonization following antibiotic treatment” (S~a~) and “susceptible to colonization following fecal transplant” (S~f~). The modified model includes five possible transition states: resistant to colonization (R), susceptible to colonization following antibiotic therapy (S~a~), susceptible to colonization following fecal transplant (S~f~), asymptomatically colonized (C), and patients with symptomatic disease (D). Addition of new parameters to reflect fecal transplant-associated transition rates among compartments were derived from the literature.  
 output: pdf_document
 documentclass: article
 header-includes:
@@ -101,57 +98,142 @@ model.new <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
 ```
 
 # Introduction
-In @lanzas, the authors investigated the transmission dynamics of _Clostridium difficile_ (_C. diff._) using a compartmental model.
-_C. diff_ is the leading cause of infectious diarrhea in hospitals and is one of the most common causes of healthcare-acquired infections.
-_C. diff_ is a pathogenic bacteria that occasionally replaces the normal bacterial microbiota of a patient’s intestines following clearance by antibiotic treatment, resulting in a diarrheal illness.
-The paper highlights the importance of transmission to C. diff. burden in hospital settings, as the authors found that the transmission coefficients associated with colonized and/or symptomatically infected patients were significant drivers of whether $R_0$ was greater or less than 1.
-As the model makes some simplifying assumptions about transmission, the authors recommend that future models explicitly incorporate different routes of transmission.
-Moreover, with the emergence of fecal transplantation as curative therapy since publication, some of the model’s compartmental assumptions and parameter estimates surrounding treatment may need to be altered.
+*Clostridium difficile* (*C. difficile*) infection (CDI) represents the
+most common healthcare-acquired infection in the United States (Lessa,
+Mu et al. 2015). Between 2000 and 2010, rates of *C. difficile*
+hospitalizations more than doubled, and CDI now constitutes nearly
+half-a-million infections per year. These infections exert a significant
+population health and economic toll: CDI has emerged as the leading
+cause of gastro-enteritis-associated death, accounting for more than
+14,000 U.S. deaths per year, and entails excess yearly hospital costs of
+more than \$1 billion (Miller, Chen et al. 2011, Dubberke and Olsen
+2012, Magill, Edwards et al. 2014).
 
-The expansion of this model has significance to hospital epidemiology policy-setting in health care systems and hospitals globally.
-In the United States specifically, _C. diff._ represents a significant ongoing source of healthcare-associated infections, adding at least one billion dollars to the cost of healthcare every year and causing substantial patient morbidity (@stop-c-diff).
-Better understanding the dynamics of _C. diff._ transmission within hospital environments is critical to developing appropriate infection control strategies and, in turn, to reducing _C. diff_ burden.
+*C. difficile* is particularly vexing in healthcare settings because of
+high patient susceptibility and easily facilitated transmission. *C.
+difficile* is a Gram-positive bacteria that may sometimes be present
+asymptomatically in small numbers in the intestinal tract (such
+individuals are “colonized”). During and following antibiotic exposure,
+however, as other gut flora dies off an ecological vacuum is created in
+which *C. difficile* rapidly replicates. *C. difficile* produces an
+exotoxin, which at high bacterial loads will cause symptomology and
+severe diarrhea — that is, CDI. Hospitalized patients, who frequently
+take antibiotics, are at high risk of CDI, and it is estimated that CDI
+risk increases 6-fold during and in the month following antibiotic
+exposure (Thomas, Stevenson et al. 2003, Hensgens, Goorhuis et al.
+2012). Moreover, both asymptomatically colonized and actively diseased
+individuals shed *C. difficile* in stool and can contaminate healthcare
+workers and surrounding environments. In particular, *C. difficile* is
+capable of forming spores which can survive for long periods as fomites
+and are not killed by alcohol-based hand sanitizers (Wilcox and Fawley
+2000). For these reasons, inter-patient spread and CDI outbreaks are
+common in healthcare environments. The standard treatment for CDI is
+antibiotics — generally metronidazole, vancomycin, or fidaxomicin — but
+recurrence rates following treatment are high (Austin, Mellow et al.
+2014).
 
-We believe that the expansions proposed in our model are necessary to achieve this objective.
-_C. diff._ is relatively unusual among bacterial pathogens, because it has the ability to form spores which are not killed by alcohol-based sanitizers.
-Somewhat parodoxically, therefore, although the transition from soap and water to alcohol sanitizers has increased hospital hand hygiene compliance (due to ease of use), it has likely accelerated transmission of _C. diff._ via healthcare workers.
-Moreover, since @lanzas was published, the environmental cleaning landscape in hospitals has evolved.
-The ongoing Ebola outbreak has heightened infection control awareness, and many hospitals have invested in gas- or UV-based apparatuses that can thoroughly decontaminate patient rooms.
-These devices, relative to historical environmental cleaning methods, are more efficacious against _C. diff._ spores.
-Consequently, modifying the original model to account for these changes and complexities is critical to accurately modeling the anticipated effects — or unintended consequences — of different infection control policies.
+Reducing the burden of healthcare-associated CDI represents an ongoing
+focus of infection control and antimicrobial stewardship initiatives.
+Better understanding *C. difficile* transmission in healthcare
+environments is integral to these efforts. In “Epidemiological Model for
+*Clostridium Difficile* Transmission in Health-Care Settings,” published
+by Lanzas *et al.* in 2011, the authors developed a compartmental
+mathematical model of *C. difficile* nosocomial transmission (the
+“*Lanzas* model”) (Lanzas, Dubberke et al. 2011). Their paper
+highlighted the importance of patient-patient transmission to *C.
+difficile* burden in hospital settings, as the authors found that the
+transmission coefficients associated with colonized and/or
+symptomatically diseased patients were significant drivers of whether
+R-0 was greater or less than 1. Since the paper’s 2011 publication,
+however, fecal transplantation to restore endogenous flora has gained
+increasing acceptance as a curative therapy for *C. difficile*. This
+therapy, in which donor feces is administered through nasogastric tube
+(or less commonly, endoscopy, colonoscopy or enema), restores normal gut
+flora that prevents *C. difficile* overgrowth, and thus toxin
+production, and provides resistance against repeat *C. difficile*
+colonization (“colonization resistance”). In studies, fecal transplant
+has cured recurrent or refractory CDI in \> 90% of patients (Austin,
+Mellow et al. 2014).
 
-Moreover, since 2011 fecal transplantation to restore endogenous flora has gained increasing acceptance as a curative therapy for _C. diff._
-To date, the majority of attention has focused on fecal transplantation’s clinical implications.
-However, it also fundamentally alters susceptible and recovery rates relative to conventional antibiotic-based regimens.
-These rates are directly relevant to _C. diff._ transmission dynamics but to our knowledge have not been modeled in the literature.
-
-We also read @pelupessy_2002.
+Unsurprisingly, fecal transplant’s impressive results have garnered
+considerable coverage in recent published literature. Its implications
+for nosocomial transmission, however, have received significantly less
+attention. Yet, fecal transplant is faster than antibiotic treatment
+(\~8-24 hours versus 10 days), and often restores gut bacterial
+diversity and resolves diarrhea symptomology nearly immediately (Bakken,
+Borody et al. 2011). These effects fundamentally alter patient
+susceptibility and recovery rates and thus are likely to influence *C.
+difficile* transmission dynamics. Therefore, in the present paper our
+objective was to update the *Lanzas* model to incorporate fecal
+transplant in order to evaluate resulting effects on *C. difficile*
+hospital-based transmission.
 
 # Methods
 
 ## Data
 
+The updated model retained the same model-fitting data employed by the
+original *Lanzas* model. This data encompassed the period from January 1
+through December 31, 2008 at Barnes-Jewish Hospital, a large tertiary
+facility, in St. Louis, Missouri. For a complete description of patient
+and microbiological characteristics, please see Lanzas et al. (2011).
+
 ## Epidemiological Model
 
-The original model in @lanzas was described by the following system of differential equations.
+We expanded the *Lanzas* deterministic compartmental model to include
+fecal transplant, in addition to antibiotic therapy, as treatment for
+*C. difficile* infection (CDI). To incorporate fecal transplant, we
+altered the original model in two ways. *First*, we collapsed the two
+asymptomatically colonized states, C^-^ and C^+^ (with and without
+immune protection against CDI), into a single colonized state, C. We
+elected to employ a single colonized compartment for model parsimony and
+due to unclear significance of “immune protection” against *C.
+difficile* disease among colonized patients, based on our review of the
+published literature. *Second*, we expanded the original “susceptible to
+colonization” state, S, into separate compartments: “susceptible to
+colonization following antibiotic treatment” (S~a~) and “susceptible to
+colonization following fecal transplant” (S~f~). The final modified
+model includes five possible transition states: resistant to
+colonization (R), susceptible to colonization following antibiotic
+therapy (S~a~), susceptible to colonization following fecal transplant
+(S~f~), asymptomatically colonized (C), and patients with symptomatic
+disease (D) (**Figure 1**). Addition of new parameters to reflect fecal
+transplant-associated transition rates among compartments were derived
+from the literature. The deterministic differential equations for the
+model are contained in **Figure 2**.
+
+[Discuss that output is R-0; then describe how estimated with next
+generation matrix]
+
+In order to estimate $R_0$, we derived the Next Generation Matrix for this 
+compartmental model, as described in @ngm.
+
+We derive F as
 $$
-\begin{aligned}
-\frac{dR}{dt}=a_r\delta N + \theta S - k_r R - \alpha R \\
-\frac{dS}{dt}=a_s\delta N + \alpha R + p \epsilon D -\theta S - kS-\lambda S \\
-\frac{dC^{-}}{dt}=a_{cn}\delta N + (1-f) \lambda S - \psi C^{-} - kC^{-} \\
-\frac{dC^{+}}{dt}=a_{cp}\delta N + f\lambda S - kC^{+} \\
-\frac{dD}{dt}=a_d\delta N + \psi C^{-} - p\epsilon D - k_dD \\
-\lambda=\beta_c(C^{-}+C{+})+\beta_dD \\
-N=R+S+C^{-}+C^{+}+D
-\end{aligned}
+\left[\begin{matrix}\beta_{c} \left(S_{a_0} + S_{f_0}\right) & \beta_{d} \left(S_{a_0} + S_{f_0}\right)\\0 & 0\end{matrix}\right]
 $$
-We reran the model, but set delta equal to `r delta` (deterministically).
 
-We modified the @lanzas model and collapsed the colonized compartments into one colonized compartment, and did not distinguish between immune status. We chose to remove this distinction as it seemed somewhat arbitrary. It's not supported in the literature? Reference?
+V as
+$$
+\left[\begin{matrix}- k + \psi & 0\\- \psi & e \rho \tau + \epsilon p \left(- \tau + 1\right) + k_{d}\end{matrix}\right]
+$$
 
-\newpage
+and the Next Generation Matrix as
+$$
+\left[\begin{matrix}\frac{\beta_{c} \left(S_{a_0} + S_{f_0}\right)}{- k + \psi} + \frac{\beta_{d} \psi \left(S_{a_0} + S_{f_0}\right)}{\left(- k + \psi\right) \left(e \rho \tau - \epsilon p \left(\tau - 1\right) + k_{d}\right)} & \frac{\beta_{d} \left(S_{a_0} + S_{f_0}\right)}{e \rho \tau - \epsilon p \left(\tau - 1\right) + k_{d}}\\0 & 0\end{matrix}\right]
+$$
 
-We conceptualized our model in this framework. (Note that the parameters aren't final!
+From the Next Generation Matrix, we obtain the spectral radius, which is the
+$R_0$ of this model.
+
+$$
+\quad - \frac{\left(S_{a_0} + S_{f_0}\right) \left(- \beta_{c} e \rho \tau + \beta_{c} \epsilon p \tau - \beta_{c} \epsilon p - \beta_{c} k_{d} - \beta_{d} \psi\right)}{\left(k - \psi\right) \left(- e \rho \tau + \epsilon p \tau - \epsilon p - k_{d}\right)}
+$$
+
+Where $S_{a_0}$ and $S_{f_0}$ are the two susceptible compartments at baseline.
+
+**Figure 1: Model Diagram of *Clostridium difficile* transmission in a
+hospital environment**
 
 \begin{center}
     \begin{tikzpicture}[
@@ -186,6 +268,9 @@ We conceptualized our model in this framework. (Note that the parameters aren't 
     \end{tikzpicture}
 \end{center}
 
+**Figure 2: Deterministic Model Differential Equations**
+
+
 $$
 \begin{aligned}
 \frac{dR}{dt}=a_r\delta N + \theta_a S_a + \theta_f S_f - k_r R - \alpha R \\
@@ -199,17 +284,6 @@ N=R+S+C+D
 $$
 
 ## Parameterization
-
-## Next Generation Matrix
-http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1578275/pdf/rsif20050042.pdf
-http://web.stanford.edu/~jhj1/teachingdocs/Jones-on-R0.pdf
-http://daphnia.ecology.uga.edu/ceesg/wp-content/uploads/2013/12/nextgen.pdf
-http://rsif.royalsocietypublishing.org/content/royinterface/7/47/873.full.pdf
-
-Recommended by Derek
-http://www.luchsinger-mathematics.ch/vandenDriessche-R0Compartmental-2002.pdf
-
-
 
 # Results
 ## Comparison of Baseline Differential Equations
@@ -235,9 +309,15 @@ ggplot(data, aes(x=time, y=size)) +
     ggtitle("Collapsed Colonized Compartments")
 ```
 
+## Sensitivity Analyses
+Using the Next Generation Matrix derived above, we perform a series
+of analyses to understand the behavior of $R_0$ in this theoretical
+system. For comparison, $R_0$ in @lanzas was estimated to be 
+0.55 - 1.99 in stochastic simulations.
+
 ## Simulation
 ```{r simulation-lanzas}
-simulations <- 1e3
+simulations <- 1e2
 
 param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
@@ -258,6 +338,9 @@ We ran `r simulations` and we saw an attack rate of
 `r lanzas.attack.rate[2]` (95% CI `r lanzas.attack.rate[c(1, 3)]`) and
 `r new.attack.rate[2]` (95% CI `r new.attack.rate[c(1, 3)]`) in the 
 original model and new model respectively.
+
+For computational analysis, we used R version 3.2.0 (@rcore). We used the
+SymPy library for symbolic mathematics (@sympy).
 
 # Discussion
 
