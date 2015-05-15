@@ -1,11 +1,4 @@
-calc.R0 <- function(t, y, param, delta = 1e-1) {
-  # current state
-  R <- y["R"]
-  S.ft <- y["S.ft"]
-  S.abx <- y["S.abx"]
-  C <- y["C"]
-  D <- y["D"]
-  
+calc.R0 <- function(N, param) {
   # params 
   a.r <- param["a.r"]   #all a's are respective admission proportion (delta is overall admit rate/N/day)
   a.s.abx <- param["a.s.abx"]
@@ -26,15 +19,14 @@ calc.R0 <- function(t, y, param, delta = 1e-1) {
   k <- param["k"]   # S & C dc rate 
   k.d <- param["k.d"]   # D dc rate
   
-  lambda <- param["beta.c"] * C + 
-    param["beta.d"] * D    # transmission (S -> C)
-  N = R + S.abx + S.ft + C + D
-  
   # calculations for R0 at disease-free equilibrium
   S.f.0 <- 0
   S.a.0 <- ((a.s.abx * k.r + alpha) * N) / (alpha + a.s.abx * k.r + (1 - a.s.abx) * k + theta.abx)
-  R.0 <- -((S.a.0 + S.f.0) * (-beta.c * epsilon.ft * psi * p.ft + beta.c * epsilon.abx * p.abx * psi - beta.c * epsilon.abx * p.abx - beta.c * k.d - beta.c * phi)) / 
-    ((k - phi) * (-epsilon.ft * psi * p.ft + epsilon.abx * p.abx * psi - epsilon.abx * p.abx - k.d))
+  R.0 <- -((S.a.0 + S.f.0) * (-beta.c * epsilon.ft * psi * p.ft + 
+                              beta.c * epsilon.abx * p.abx * psi - 
+                              beta.c * epsilon.abx * p.abx - beta.c * 
+                              k.d - beta.c * phi)) / 
+         ((k - phi) * (-epsilon.ft * psi * p.ft + epsilon.abx * p.abx * psi - epsilon.abx * p.abx - k.d))
   
   return(R.0)
 }
