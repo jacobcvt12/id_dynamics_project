@@ -8,9 +8,9 @@ author:
 date: "`r format(Sys.time(), '%d %B %Y')`"
 bibliography: bibliography.bib
 abstract: |
-  **Objective —** In “Epidemiological Model for *Clostridium Difficile* Transmission in Health-Care Settings,” published by Lanzas et al. in 2011, the authors developed a compartmental mathematical model of *C.  difficile* nosocomial transmission (the “*Lanzas* model”). The paper highlights the importance of patient-patient transmission to *C.  difficile* burden in hospital settings, as the authors found that the transmission coefficients associated with colonized and/or symptomatically diseased patients were significant drivers of whether R0 was greater or less than 1. Since publication, however, fecal transplantation to restore endogenous flora has gained increasing acceptance as a curative therapy for *C. difficile*. To date, the majority of attention has focused on fecal transplantation’s clinical implications, but it also fundamentally alters susceptibility and recovery rates relative to conventional antibiotic-based regimens. These rates are directly relevant to *C. difficile* transmission dynamics, in particular transmission from symptomatically diseased patients, but to our knowledge have not been modeled in the literature. Our objective was to update the *Lanzas* model to incorporate fecal transplant as an alternative to antibiotic treatment in order to evaluate resulting effects on *C. difficile* hospital-based transmission.  
+  **Objective —** In “Epidemiological Model for *Clostridium Difficile* Transmission in Health-Care Settings,” published by @lanzas, the authors developed a compartmental mathematical model of *C.  difficile* nosocomial transmission (the “*Lanzas* model”). The paper highlights the importance of patient-patient transmission to *C.  difficile* burden in hospital settings, as the authors found that the transmission coefficients associated with colonized and/or symptomatically diseased patients were significant drivers of whether R0 was greater or less than 1. Since publication, however, fecal transplantation to restore endogenous flora has gained increasing acceptance as a curative therapy for *C. difficile*. To date, the majority of attention has focused on fecal transplantation’s clinical implications, but it also fundamentally alters susceptibility and recovery rates relative to conventional antibiotic-based regimens. These rates are directly relevant to *C. difficile* transmission dynamics, in particular transmission from symptomatically diseased patients, but to our knowledge have not been modeled in the literature. Our objective was to update the *Lanzas* model to incorporate fecal transplant as an alternative to antibiotic treatment in order to evaluate resulting effects on *C. difficile* hospital-based transmission.  
   **Design —** Retrospective cohort.  
-  **Setting and Patients —** All patients admitted to the medical wards at a large tertiary care hospital in the United States between January 1 and December 31, 2008 (underlying study cohort of Lanzas *et al.*, 2011).  
+  **Setting and Patients —** All patients admitted to the medical wards at a large tertiary care hospital in the United States between January 1 and December 31, 2008 (underlying study cohort of @lanzas).  
   **Methods —** The *Lanzas* model was modified to include fecal transplant, in addition to antibiotic therapy, as treatment for *C.  difficile* infection (CDI). To incorporate fecal transplant, we altered the original model in two primary ways: (1) Collapse of the two asymptomatically colonized states, C^-^ and C^+^ (with and without protection against CDI), into a single colonized state, C; and (2) Expansion of the single “susceptible to colonization” state, S, into separate compartments: “susceptible to colonization following antibiotic treatment” (S~a~) and “susceptible to colonization following fecal transplant” (S~f~). The modified model includes five possible transition states: resistant to colonization (R), susceptible to colonization following antibiotic therapy (S~a~), susceptible to colonization following fecal transplant (S~f~), asymptomatically colonized (C), and patients with symptomatic disease (D). Addition of new parameters to reflect fecal transplant-associated transition rates among compartments were derived from the literature.  
 output: pdf_document
 documentclass: article
@@ -117,8 +117,7 @@ half-a-million infections per year. These infections exert a significant
 population health and economic toll: CDI has emerged as the leading
 cause of gastro-enteritis-associated death, accounting for more than
 14,000 U.S. deaths per year, and entails excess yearly hospital costs of
-more than \$1 billion (Miller, Chen et al. 2011, Dubberke and Olsen
-2012, Magill, Edwards et al. 2014).
+more than \$1 billion (@miller_chen, @dubberke_olsen_2012, @magill_edwards).
 
 *C. difficile* is particularly vexing in healthcare settings because of
 high patient susceptibility and easily facilitated transmission. *C.
@@ -136,12 +135,10 @@ exposure (Thomas, Stevenson et al. 2003, Hensgens, Goorhuis et al.
 individuals shed *C. difficile* in stool and can contaminate healthcare
 workers and surrounding environments. In particular, *C. difficile* is
 capable of forming spores which can survive for long periods as fomites
-and are not killed by alcohol-based hand sanitizers (Wilcox and Fawley
-2000). For these reasons, inter-patient spread and CDI outbreaks are
+and are not killed by alcohol-based hand sanitizers (@wilcox). For these reasons, inter-patient spread and CDI outbreaks are
 common in healthcare environments. The standard treatment for CDI is
 antibiotics — generally metronidazole, vancomycin, or fidaxomicin — but
-recurrence rates following treatment are high (Austin, Mellow et al.
-2014).
+recurrence rates following treatment are high (@austin-matthew).
 
 Reducing the burden of healthcare-associated CDI represents an ongoing
 focus of infection control and antimicrobial stewardship initiatives.
@@ -163,16 +160,14 @@ therapy, in which donor feces is administered through nasogastric tube
 flora that prevents *C. difficile* overgrowth, and thus toxin
 production, and provides resistance against repeat *C. difficile*
 colonization (“colonization resistance”). In studies, fecal transplant
-has cured recurrent or refractory CDI in \> 90% of patients (Austin,
-Mellow et al. 2014).
+has cured recurrent or refractory CDI in \> 90% of patients (@austin-matthew).
 
 Unsurprisingly, fecal transplant’s impressive results have garnered
 considerable coverage in recent published literature. Its implications
 for nosocomial transmission, however, have received significantly less
 attention. Yet, fecal transplant is faster than antibiotic treatment
 (\~8-24 hours versus 10 days), and often restores gut bacterial
-diversity and resolves diarrhea symptomology nearly immediately (Bakken,
-Borody et al. 2011). These effects fundamentally alter patient
+diversity and resolves diarrhea symptomology nearly immediately (@bakken-johan). These effects fundamentally alter patient
 susceptibility and recovery rates and thus are likely to influence *C.
 difficile* transmission dynamics. Therefore, in the present paper our
 objective was to update the *Lanzas* model to incorporate fecal
@@ -187,7 +182,7 @@ The updated model retained the same model-fitting data employed by the
 original *Lanzas* model. This data encompassed the period from January 1
 through December 31, 2008 at Barnes-Jewish Hospital, a large tertiary
 facility, in St. Louis, Missouri. For a complete description of patient
-and microbiological characteristics, please see Lanzas et al. (2011).
+and microbiological characteristics, please see @lanzas.
 
 ## Epidemiological Model
 
@@ -218,8 +213,6 @@ generation matrix]
 
 In order to estimate $R_0$, we derived the Next Generation Matrix for this 
 compartmental model, as described in @ngm.
-
-This needs to be updated from SymPy program!
 
 We derive F as
 $$
@@ -296,7 +289,36 @@ k            & Discharge rate for susceptible and colonized patients (1/days)   
 kd           & Discharge rate for diseased patients (1/day)                                            & 0.068          & --                                              & Lanzas Data                                                                  \\ \hline
 \end{tabular}
 
+References: 
+@rafii_sutherland
+@chakra-nour
+@austin-matthew
+@bakken-johan
+@seekatz_aas
+@clabots_johnson
+@chang_krezolek
+
 # Results
+![R0](R0.png =100x)
+
+```{r fig5}
+simulations <- 2e1
+
+param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
+           theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
+           epsilon.abx=epsilon.abx, p.abx=p.abx, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           epsilon.ft=epsilon.ft, p.ft=p.ft, psi=psi)
+
+# initial state
+initial.state <- c(R=1e3, S.abx=0, S.ft=0, C=1e1, D=0)
+
+new.attack.rate <- stochastic.sim(param, initial.state,
+                                  stochastic.dx.dt.new, simulations,
+                                  all=TRUE)
+
+qplot(new.attack.rate, geom="density", xlab="Attack Rate", ylab="")
+```
+
 ## Comparison of Baseline Differential Equations
 ```{r graphs-1, warning=FALSE}
 data.old <- model.old %>% 

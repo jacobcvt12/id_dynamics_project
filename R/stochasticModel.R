@@ -1,7 +1,8 @@
 stochastic.sim <- function(param, initial.state,
                            dx.dt.func,
                            max.step=1e3,
-                           iters=1e3) {
+                           iters=1e3,
+                           all=FALSE) {
 
     # initialize matrix for output
     sim.data <- matrix(ncol=2, nrow=iters)
@@ -15,8 +16,12 @@ stochastic.sim <- function(param, initial.state,
     # calculate 95% quantile based interval for attack rate
     attack.rate <- sim.data[, 2] / sim.data[, 1]
     sim.ci <- quantile(attack.rate, c(0.025, 0.5, 0.975))
-
-    return(sim.ci)
+    
+    if(!all) {
+        return(sim.ci)
+    } else {
+        return(attack.rate)
+    }
 }
 
 stochastic.run <- function(param, initial.state, 
