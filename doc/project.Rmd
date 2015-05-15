@@ -405,12 +405,27 @@ new.attack.rate <- stochastic.sim(param, initial.state,
                                   stochastic.dx.dt.new, simulations)
 ```
 
+```{r simulation-new-bestcase}
+param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
+           theta.abx=theta.abx, theta.ft=2.0, beta.c=beta.c, beta.d=beta.d,  
+           epsilon.abx=epsilon.abx, p.abx=p.abx, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           epsilon.ft=2.0, p.ft=1.0, psi=1.0)
+
+# initial state
+initial.state <- c(R=1e3, S.abx=0, S.ft=0, C=1e1, D=0)
+
+new.attack.rate.bestcase <- stochastic.sim(param, initial.state,
+                                  stochastic.dx.dt.new, simulations)
+```
+
 We ran `r simulations` simulations and we saw an attack rate of 
 `r lanzas.attack.rate[2]` (95% ci `r lanzas.attack.rate[c(1, 3)]`) and
 `r new.attack.rate[2]` (95% CI `r new.attack.rate[c(1, 3)]`) in the 
 original model and new model respectively. We varied the relevant parameters
 in the stochastic simulation of the fecal-transplant model, but did not see
 much of a change in the behavior of the attack rate.
+
+best-case AR: `r new.attack.rate.bestcase[2]` (95% CI `r new.attack.rate.bestcase[c(1, 3)]`)
 
 For computational analysis, we used R version 3.2.0 (@rcore). We used the
 SymPy library for symbolic mathematics (@sympy).
