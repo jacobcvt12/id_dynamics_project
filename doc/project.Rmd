@@ -451,7 +451,7 @@ Our stochastic simulations of the Lanzas model and our baseline model
 incorporating fecal transplant yielded an attack rate of 44.6% (95% CI:
 40.5, 49.1) and 40.3% (95% CI: 36.6, 43.7), respectively (see **Figure
 5** for a distribution of final attack rates in our baseline model). The
-attack rate under a “best case” fecal transplant scenario in which
+attack rate under a “best-case” fecal transplant scenario in which
 diseased patients are treated immediately -- 100% of diseased patients
 received fecal transplant, the duration of treatment is 12 hours, there
 is a 100% cure rate, and restoration of microflora colonization
