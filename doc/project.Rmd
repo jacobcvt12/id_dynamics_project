@@ -402,7 +402,7 @@ defined as an incident colonization or diseased case. Patients who
 transition from colonized to diseased do not constitute incident
 diseased patients, and patients who recover and become re-infected
 contribute to both the numerator and denominator of the attack rate. We
-also varied fecal transplant parameters of interest and re-generated
+also varied fecal transplant parameters of interest and regenerated
 model simulations to evaluate resulting effects on *C. difficile* attack
 rates.
 
