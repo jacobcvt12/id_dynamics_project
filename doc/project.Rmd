@@ -252,41 +252,7 @@ $$
 **Figure 1: Model Diagram of *Clostridium difficile* transmission in a
 hospital environment**
 
-We conceptualized our model in this framework. (Note that the parameters aren't final!)
-Please fix this Jacob! From, Jacob.
-
-\begin{center}
-    \begin{tikzpicture}[
-        > = stealth, % arrow head style
-        auto,
-        node distance = 3cm, % distance between nodes
-        semithick % line style
-        ]
-
-        \tikzstyle{every state}=[
-            draw = black,
-            thick,
-            fill = white,
-            minimum size = 4mm
-        ]
-
-        \node[state] (R) {Resistant};
-        \node[state] (S1) [below left of=R] {Susceptible 1};
-        \node[state] (S2) [below right of=R] {Susceptible 2};
-        \node[state] (C) [below left of=S2] {Colonized};
-        \node[state] (D) [below of=C] {Diseased};
-
-        \path[->] (R) edge node {$\alpha$} (S1);
-        \path[->] (R) edge node {$\alpha$} (S2);
-        \path[->] (S2) edge node {$\beta$} (R);
-        \path[->] (S1) edge node {$\gamma$} (C);
-        \path[->] (S2) edge node {$\gamma$} (C);
-        \path[->] (C) edge node {$\epsilon$} (D);
-        \path[->] (D) edge node {$\theta$} (S1);
-        \path[->] (D) edge node {$\theta$} (S2);
-
-    \end{tikzpicture}
-\end{center}
+![diagram](diagram.jpg)
 
 **Figure 2: Deterministic Model Differential Equations**
 
