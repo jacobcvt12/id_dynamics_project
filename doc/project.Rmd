@@ -381,6 +381,7 @@ References:
 @seekatz_aas
 @clabots_johnson
 @chang_krezolek
+@mcfarland
 
 ## Sensitivity Analyses
 
