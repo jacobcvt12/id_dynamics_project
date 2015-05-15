@@ -337,11 +337,12 @@ Using the Next Generation Matrix derived above, we perform a series
 of analyses to understand the behavior of $R_0$ in this theoretical
 system. For comparison, $R_0$ in @lanzas was estimated to be 
 0.55 - 1.99 in stochastic simulations. In our model, $R_0$ was estimated to be
-`r calc.R0(30, param)`, using a ward size of 30 which is similar to what was 
+`r calc.R0(20, param)`, using a ward size of 30 which is similar to what was 
 done in @lanzas.
 
 ```{r sens-range}
 # orig vals
+N <- 20
 psi.old <- param["psi"]
 epsilon.ft.old <- param["epsilon.ft"]
 p.ft.old <- param["p.ft"]
@@ -350,36 +351,40 @@ theta.ft.old <- param["theta.ft"]
 print("psi")
 for (psi.temp in c(0, 0.5, 1)) {
     param["psi"] <- psi.temp
-    print(calc.R0(30, param))
+    print(calc.R0(N, param))
     param["psi"] <- psi.old
 }
 
 print("ep.f")
 for (ep.temp in c(0.25, 0.5, 1.5, 2.0)) {
     param["epsilon.ft"] <- ep.temp
-    print(calc.R0(30, param))
+    print(calc.R0(N, param))
     param["epsilon.ft"] <- epsilon.ft.old
 }
 
 print("p.ft")
 for (p.ft.temp in c(0.5, 1)) {
     param["p.ft"] <- p.ft.temp
-    print(calc.R0(30, param))
+    print(calc.R0(N, param))
     param["p.ft"] <- p.ft.old
 }
 
-print("theta.ft")
-for (theta.temp in c(0.063, 1.5, 2.0)) {
-    param["theta.ft"] <- theta.temp
-    print(calc.R0(30, param))
-    param["theta.ft"] <- theta.ft.old
-}
+# best case scenario
+
+param["psi"] <- 1
+param["epsilon.ft"] <- 2
+param["p.ft"] <- 1
+
+# change params back
+param["p.ft"] <- p.ft.old
+param["epsilon.ft"] <- epsilon.ft.old
+param["psi"] <- psi.old
 ```
 
 
 ## Simulation
 ```{r simulation-lanzas}
-simulations <- 5e1
+simulations <- 1e3
 
 param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
