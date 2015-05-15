@@ -486,9 +486,9 @@ qplot(new.attack.rate, geom="density", xlab="Attack Rate", ylab="")
 We present an expanded mathematical model of *C. difficile* nosocomial
 transmission that incorporates fecal transplant, in addition to standard
 antibiotic therapy, as a treatment for CDI. Our deterministic model, run
-in an open hospital population of ward size 20, assumed consistent with
-literature estimates that all symptomatic *C. difficile* patients are
-treated and that 20% of these treatments will be fecal transplant
+in an open hospital population of ward size 20, assumed estimates 
+consistent with the literature that all symptomatic *C. difficile* patients are
+treated, and that 20% of these treatments will be fecal transplant
 (reflective of the 20% recurrence rate associated with antibiotic
 treatment and fecal transplant’s current restriction to recurrent or
 refractory CDI patients). Under this scenario, which was designed to be
@@ -497,7 +497,7 @@ our model yielded an estimate of the basic reproductive number of *C.
 difficile* of 1.138. This R0, relative to the estimate of 1.281
 generated in the original *Lanzas* model, reflects an approximately 12%
 reduction in R0 associated with fecal transplant. In our deterministic
-models R0 was also sensitive to variations in fecal transplant
+models, R0 was also sensitive to variations in fecal transplant
 parameters, with the proportion of patients receiving fecal transplant
 representing the most significant fecal transplant-related driver of R0
 shifts. Under a “best-case” scenario in which all diseased patients
@@ -519,12 +519,12 @@ nosocomial transmission investigations, as presented here, due to
 frequently small ward sizes and basic reproductive numbers that are near
 1. In our analyses, addition of fecal transplant resulted in an
 approximately 10% reduction in the final attack rate, similar to the
-observed reductions in R0 observed in our deterministic models.
+reductions in R0 observed in our deterministic models.
 Specifically, the attack rate shifted from approximately 45% to 40% when
 1 of every 5 CDI patients receive fecal transplant rather than
 antibiotic treatment, although the 95% confidence intervals did
 partially overlap. Interestingly, increasing the percentage of patients
-who receive fecal transplant — even when this percentage reaches 100% —
+who receive fecal transplant, even when this percentage reaches 100%,
 did not further reduce attack rates. These results are consistent with
 the *Lanzas* model, which observed minimal impact of epidemiological
 parameters linked to patient susceptibility, which the authors
@@ -536,12 +536,12 @@ effects on attack rates.
 
 Our model possesses some important limitations. *First*, we elected to
 collapse the *Lanzas’* model’s two colonized compartments into a single
-compartment due to inadequate support in the published literature to
-support a “colonized with immune protection” compartment. We recognize,
+compartment due to inadequate support in the published literature for
+a “colonized with immune protection” compartment. We recognize,
 however, that although our model validation yielded similar trajectory
 and final number of the diseased compartment, the models are not
 identical. An important future exploratory analysis would be to also
-evaluate fecal transplant in the original, dual-colonized-compartment
+evaluate fecal transplant in the original, dual-colonized compartment
 *Lanzas* model. Nevertheless, sensitivity analyses each run on our
 underlying expanded model clearly demonstrated sensitivity of R0 to
 shifts in fecal transplant parameter estimates. *Second*, the proximity
@@ -549,7 +549,7 @@ of R0 to 1, the value at which transmission is not self-sustaining, also
 suggests that *C. difficile* stochastic fadeout is likely in small
 hospital populations. An important future analysis would be to
 explicitly model these effects in stochastic simulations to yield the
-distribution of final epidemic sizes, in both populations with and
+distribution of final epidemic sizes, both in populations with and
 without introductions, that result when varying fecal transplant
 parameters. *Third*, the Lanzas authors noted that their model
 identified the transmission coefficients associated with colonized
@@ -561,8 +561,7 @@ limitation noted in the original model and is likely to have changed
 since 2011 as environmental disinfection technologies have advanced.
 Time constraints prevented this model addition, but future model
 development that includes these pathways would be relevant to capturing
-both advances in disinfection and treatment (fecal transplant) since
-original that affect *C. difficile* transmission dynamics.
+both advances in disinfection and treatment (fecal transplant).
 
 As *Clostridium difficile* continues to exert a significant public
 health and economic toll in the United States, better understanding the
