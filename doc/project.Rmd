@@ -192,10 +192,10 @@ We expanded the *Lanzas* deterministic compartmental model to include
 fecal transplant, in addition to antibiotic therapy, as treatment for
 *C. difficile* infection (CDI). To incorporate fecal transplant, we
 altered the original model in two ways. *First*, we collapsed the two
-asymptomatically colonized states, C^-^ and C^+^ (with and without
+asymptomatically colonized states, C^+^ and C^-^ (with and without
 immune protection against CDI), into a single colonized state, C. We
 elected to employ a single colonized compartment for model parsimony due
-to unclear significance of “immune protection” against *C. difficile*
+to unclear validity of “immune protection” against *C. difficile*
 disease among colonized patients, based on our review of the published
 literature. *Second*, we expanded the original “susceptible to
 colonization” state, S, into separate compartments: “susceptible to
@@ -205,7 +205,7 @@ model includes five possible transition states: resistant to
 colonization (R), susceptible to colonization following antibiotic
 therapy (S~a~), susceptible to colonization following fecal transplant
 (S~f~), asymptomatically colonized (C), and patients with symptomatic
-disease (D) (**Figure 1**). The addition of new parameters to reflect
+disease (D) (**Figure 1**). The new parameters to reflect
 fecal transplant-associated transition rates among compartments were
 derived from the literature. The deterministic differential equations
 for the model are contained in **Figure 2**.
