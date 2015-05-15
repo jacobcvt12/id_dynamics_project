@@ -271,6 +271,30 @@ $$
 
 ## Parameterization
 
+**Table 1: Deterministic Model Parameters**
+
+  ------------ ----------------------------------------------------------------------------------------- -------------------- ------------------------------------------------- ---------------------------------------------------------------------------------------------------------------
+  **Symbol**   **Description (Units)**                                                                   **Point Estimate**   **Range Employed in Sensitivity Analysis**        **Source**
+  *a~r~*       Proportion of resistant admitted patients                                                 0.75                 --                                                Lanzas Data
+  *a~s~*       Proportion of susceptible-following-antibiotic-therapy (S~a~) admitted patients           0.22                 --                                                Lanzas Estimate (Data-derived)
+  *a~c~*       Proportion of colonized admitted patients                                                 0.01                 --                                                Lanzas Estimate (Data-derived)
+  *a~d~*       Proportion of diseased admitted patients                                                  0.01                 --                                                Lanzas Data
+  $\alpha$            Antibiotic prescription rate (1/days)                                                     0.5                  --                                                Lanzas Data
+  $\theta_a$         Restoration rate of colonization resistance following antibiotic treatment (1/days)       0.033                --                                                Lanzas Estimate
+  $\beta_c, \beta_d$   Transmission coefficient of infectious (colonized or diseased) patients (1/(ind\*days))   0.007                --                                                Lanzas Estimate (Rafii, Sutherland et al. 2008)
+  psi            Proportion of diseased patients that receive fecal transplant                             0.20                 0.00 – 1.0 (values of 0.00, 0.50, and 1.0)        New Estimate (Abou Chakra, Pepin et al. 2014)
+  $\epsilon_a$         Antibiotic treatment rate (1/days duration)                                               0.10                 --                                                Lanzas Estimate (McFarland 2008)
+  p~a~         Probability of successful antibiotic treatment                                            0.80                 --                                                Lanzas Estimate (McFarland 2008)
+  $\epsilon_f$         Fecal transplant treatment rate (1/days duration)                                         1.0                  0.25 – 2.0 (values of 0.25, 0.50, 1.5, and 2.0)   New Estimate (Austin, Mellow et al. 2014)
+  p~f~         Probability of successful fecal transplant treatment                                      0.90                 0.50 – 1.0 (values of 0.50 and 1.0)               New Estimate (Austin, Mellow et al. 2014)
+  $\theta_f$         Restoration rate of colonization resistance following fecal transplant (1/days)           1.0                  0.063 – 2.0 (values of 0.063, 1.5, and 2.0)       <span id="h.gjdgxs" class="anchor"></span>New Estimate (Bakken, Borody et al. 2011, Seekatz, Aas et al. 2014)
+  phi            Clinical disease rate at which colonized patients progress to infection (1/days)          0.04                 --                                                Lanzas Estimate (Clabots, Johnson et al. 1992) (Chang, Krezolek et al. 2007)
+  *k~r~*       Discharge rate for resistant patients (1/days)                                            0.33                 --                                                Lanzas Data
+  *k*          Discharge rate for susceptible and colonized patients (1/days)                            0.15                 --                                                Lanzas Data
+  *k~d~*       Discharge rate for diseased patients (1/day)                                              0.068                --                                                Lanzas Data
+  ------------ ----------------------------------------------------------------------------------------- -------------------- ------------------------------------------------- ---------------------------------------------------------------------------------------------------------------
+
+
 # Results
 ## Comparison of Baseline Differential Equations
 ```{r graphs-1, warning=FALSE}
