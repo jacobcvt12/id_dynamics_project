@@ -115,9 +115,9 @@ model.new.valid <- lsoda(initial.state, times, dx.dt.new, param, delta=delta)
 most common healthcare-acquired infection in the United States
 (@lessa_mu). Between 2000 and 2010, rates of *C. difficile*
 hospitalizations more than doubled, and CDI now constitutes nearly
-half-a-million infections per year. These infections exert a significant
+half of a million infections per year. These infections exert a significant
 population health and economic toll: CDI has emerged as the leading
-cause of gastro-enteritis-associated death, accounting for more than
+cause of gastroenteritis-associated death, accounting for more than
 14,000 U.S. deaths per year, and entails excess yearly hospital costs of
 more than \$1 billion (@miller_chen).
 
@@ -126,21 +126,21 @@ high patient susceptibility and easily facilitated transmission. *C.
 difficile* is a Gram-positive bacteria that may sometimes be present
 asymptomatically in small numbers in the intestinal tract (such
 individuals are “colonized”). During and following antibiotic exposure,
-however, as other gut flora dies off an ecological vacuum is created in
+however, as other gut flora die off, an ecologic vacuum is created in
 which *C. difficile* rapidly replicates. *C. difficile* produces an
-exotoxin, which at high bacterial loads will cause symptomology and
+exotoxin, which at high bacterial loads will cause 
 severe diarrhea — that is, CDI. Hospitalized patients, who frequently
 take antibiotics, are at high risk of CDI, and it is estimated that CDI
-risk increases 6-fold during and in the month following antibiotic
-exposure (@thomas,@hensgens). Moreover, both asymptomatically colonized
+risk increases 6-fold during antibiotic
+exposure and in the month following  (@thomas,@hensgens). Moreover, both asymptomatically colonized
 and actively diseased individuals shed *C. difficile* in stool and can
 contaminate healthcare workers and surrounding environments. In
 particular, *C. difficile* is capable of forming spores which can
-survive for long periods as fomites and are not killed by alcohol-based
+survive for long periods on fomites and are not killed by alcohol-based
 hand sanitizers (@wilcox). For these reasons, inter-patient spread and
 CDI outbreaks are common in healthcare environments. The standard
-treatment for CDI is antibiotics — generally metronidazole, vancomycin,
-or fidaxomicin — but recurrence rates following treatment are high
+treatment for CDI is antibiotics, generally metronidazole, vancomycin,
+or fidaxomicin, but recurrence rates following treatment are high
 (@austin-matthew).
 
 Reducing the burden of healthcare-associated CDI represents an ongoing
@@ -151,7 +151,7 @@ environments is integral to these efforts. In “Epidemiological Model for
 by Lanzas *et al.* in 2011, the authors developed a compartmental
 mathematical model of *C. difficile* nosocomial transmission (the
 “*Lanzas* model”) (@lanzas). Their paper highlighted the importance of
-patient-patient transmission to *C. difficile* burden in hospital
+patient-to-patient transmission to *C. difficile* burden in hospital
 settings, as the authors found that the transmission coefficients
 associated with colonized and/or symptomatically diseased patients were
 significant drivers of whether R-0 was greater or less than 1. Since the
@@ -170,10 +170,10 @@ garnered considerable coverage in recent published literature. Its
 implications for nosocomial transmission, however, have received
 significantly less attention. Yet, fecal transplant is faster than
 antibiotic treatment (\~8-24 hours versus 10 days), and often restores
-gut bacterial diversity and resolves diarrhea symptomology nearly
+gut bacterial diversity and resolves symptomatology nearly
 immediately (@bakken-johan). These effects fundamentally alter patient
 susceptibility and recovery rates and thus are likely to influence *C.
-difficile* transmission dynamics. Therefore, in the present paper our
+difficile* transmission dynamics. Therefore, in the present paper, our
 objective was to update the *Lanzas* model to incorporate fecal
 transplant in order to evaluate resulting effects on *C. difficile*
 hospital-based transmission.
@@ -194,10 +194,10 @@ We expanded the *Lanzas* deterministic compartmental model to include
 fecal transplant, in addition to antibiotic therapy, as treatment for
 *C. difficile* infection (CDI). To incorporate fecal transplant, we
 altered the original model in two ways. *First*, we collapsed the two
-asymptomatically colonized states, C^-^ and C^+^ (with and without
+asymptomatically colonized states, C^+^ and C^-^ (with and without
 immune protection against CDI), into a single colonized state, C. We
 elected to employ a single colonized compartment for model parsimony due
-to unclear significance of “immune protection” against *C. difficile*
+to unclear validity of “immune protection” against *C. difficile*
 disease among colonized patients, based on our review of the published
 literature. *Second*, we expanded the original “susceptible to
 colonization” state, S, into separate compartments: “susceptible to
@@ -207,7 +207,7 @@ model includes five possible transition states: resistant to
 colonization (R), susceptible to colonization following antibiotic
 therapy (S~a~), susceptible to colonization following fecal transplant
 (S~f~), asymptomatically colonized (C), and patients with symptomatic
-disease (D) (**Figure 1**). The addition of new parameters to reflect
+disease (D) (**Figure 1**). The new parameters to reflect
 fecal transplant-associated transition rates among compartments were
 derived from the literature. The deterministic differential equations
 for the model are contained in **Figure 2**.
@@ -313,7 +313,7 @@ Model parameters are reflected in **Table 1**. Proportions of admitted
 patients, the antibiotic inpatient prescription rate, and patient
 discharge rates were retained from the *Lanzas* cohort data. We also
 retained *Lanzas* literature-derived estimates for the transmission
-coefficient of infectious (asymptomatically colonized or diseased)
+coefficients of infectious (asymptomatically colonized and diseased)
 patients ($\beta_c, \beta_d$). Due to collapsing the colonized compartments in
 our model, we accordingly modified the rate at which colonized patients
 progress to symptomatic infection ($\phi$) but retained the underlying
@@ -336,7 +336,7 @@ the same estimate as the *Lanzas* model for comparison purposes.
 
 Fecal transplant parameters represent new additions to the model. We set
 the point estimate of proportion of CDI cases who receive fecal
-transplant ($\psi$) at 0.20, to reflect that at present fecal transplant is
+transplant ($\psi$) at 0.20, to reflect that, at present, fecal transplant is
 generally reserved only for recurrent or refractory CDI (@chakra-nour).
 We assumed, consistent with clinical guidelines, that all symptomatic
 patients receive antibiotic or fecal transplant treatment, and therefore
