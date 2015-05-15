@@ -53,7 +53,7 @@ print("NGM")
 print(latex(A))
 
 print("eigenvalues")
-print(latex(R_0))
+print(latex(list(R_0)[1]))
 
 # DFE
 # a_r, delta, N, theta, S, k_r, R, alpha = \
