@@ -562,7 +562,7 @@ since 2011 as environmental disinfection technologies have advanced.
 Time constraints prevented this model addition, but future model
 development that includes these pathways would be relevant to capturing
 both advances in disinfection and treatment (fecal transplant) since
-original that affect *C. difficile* transmission dynamics.
+original publication that affect *C. difficile* transmission dynamics.
 
 As *Clostridium difficile* continues to exert a significant public
 health and economic toll in the United States, better understanding the
