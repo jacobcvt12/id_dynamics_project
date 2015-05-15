@@ -55,7 +55,7 @@ epsilon.ft <- 0.01
 p <- p.abx <- 0.8
 p.ft <- 0.8
 psi <- 0.1
-phi <- 0.2
+phi <- 0.05
 k.r <- 0.33
 k <- 0.15
 k.d <- 0.068
@@ -72,7 +72,7 @@ delta <- 1e-1
 # parameter vector
 param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
-           epsilon=epsilon, p=p, phi=phi, k.r=k.r, k=k, k.d=k.d)
+           epsilon=epsilon, p=p, phi=0.2, k.r=k.r, k=k, k.d=k.d)
 
 # initial state
 initial.state <- c(R=1e3, S=0, P=0, C=1e1, D=0)
@@ -226,22 +226,27 @@ $$
 
 V as
 $$
-\left[\begin{matrix}- k + \psi & 0\\- \psi & e \rho \tau + \epsilon p \left(- \tau + 1\right) + k_{d}\end{matrix}\right]
+\left[\begin{matrix}- k + \phi & 0\\- \phi & \epsilon p \left(- \psi + 1\right) + \epsilon_{f} p_{f} \psi + k_{d}\end{matrix}\right]
 $$
 
 and the Next Generation Matrix as
 $$
-\left[\begin{matrix}\frac{\beta_{c} \left(S_{a_0} + S_{f_0}\right)}{- k + \psi} + \frac{\beta_{d} \psi \left(S_{a_0} + S_{f_0}\right)}{\left(- k + \psi\right) \left(e \rho \tau - \epsilon p \left(\tau - 1\right) + k_{d}\right)} & \frac{\beta_{d} \left(S_{a_0} + S_{f_0}\right)}{e \rho \tau - \epsilon p \left(\tau - 1\right) + k_{d}}\\0 & 0\end{matrix}\right]
+\left[\begin{matrix}\frac{\beta_{c} \left(S_{a_0} + S_{f_0}\right)}{- k + \phi} + \frac{\beta_{d} \phi \left(S_{a_0} + S_{f_0}\right)}{\left(- k + \phi\right) \left(- \epsilon p \left(\psi - 1\right) + \epsilon_{f} p_{f} \psi + k_{d}\right)} & \frac{\beta_{d} \left(S_{a_0} + S_{f_0}\right)}{- \epsilon p \left(\psi - 1\right) + \epsilon_{f} p_{f} \psi + k_{d}}\\0 & 0\end{matrix}\right]
 $$
 
 From the Next Generation Matrix, we obtain the spectral radius, which is the
 $R_0$ of this model.
 
 $$
-\quad - \frac{\left(S_{a_0} + S_{f_0}\right) \left(- \beta_{c} e \rho \tau + \beta_{c} \epsilon p \tau - \beta_{c} \epsilon p - \beta_{c} k_{d} - \beta_{d} \psi\right)}{\left(k - \psi\right) \left(- e \rho \tau + \epsilon p \tau - \epsilon p - k_{d}\right)}
+- \frac{\left(S_{a_0} + S_{f_0}\right) \left(\beta_{c} \epsilon p \psi - \beta_{c} \epsilon p - \beta_{c} \epsilon_{f} p_{f} \psi - \beta_{c} k_{d} - \beta_{d} \phi\right)}{\left(k - \phi\right) \left(\epsilon p \psi - \epsilon p - \epsilon_{f} p_{f} \psi - k_{d}\right)}
 $$
 
-Where $S_{a_0}$ and $S_{f_0}$ are the two susceptible compartments at baseline.
+Where $S_{a_0}$ and $S_{f_0}$ are the two susceptible compartments at baseline. However, it should be noted,
+that at disease free equilibrium, no persons flow from $R$ to $S_{f_0}$, so $S_{f_0} = 0$. We describe 
+$S_{a_0}$ as 
+$$
+S_{a_0} = \frac{(a_s k_r + \alpha) N}{\alpha + a_s k_r + (1-a_s)k + \theta_a}
+$$
 
 **Figure 1: Model Diagram of *Clostridium difficile* transmission in a
 hospital environment**
@@ -334,7 +339,7 @@ system. For comparison, $R_0$ in @lanzas was estimated to be
 
 ## Simulation
 ```{r simulation-lanzas}
-simulations <- 5e2
+simulations <- 5e1
 
 param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
            theta=theta, beta.c=beta.c, beta.d=beta.d, f=f, 
@@ -344,7 +349,7 @@ param <- c(a.r=a.r, a.s=a.s, a.cn=a.cn, a.cp=a.cp, a.d=a.d, alpha=alpha,
 initial.state <- c(R=1e3, S=0, P=0, C=1e1, D=0)
 
 lanzas.attack.rate <- stochastic.sim(param, initial.state,
-                                     stochastic.dx.dt)
+                                     stochastic.dx.dt, simulations)
 ```
 
 ```{r simulation-new}
@@ -357,13 +362,29 @@ param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
 initial.state <- c(R=1e3, S.abx=0, S.ft=0, C=1e1, D=0)
 
 new.attack.rate <- stochastic.sim(param, initial.state,
-                                  stochastic.dx.dt.new)
+                                  stochastic.dx.dt.new, simulations)
+```
+
+```{r simulation-best}
+param <- c(a.r=a.r, a.s.abx=a.s.abx, a.c=a.c, a.d=a.d, alpha=alpha,
+           theta.abx=theta.abx, theta.ft=theta.ft, beta.c=beta.c, beta.d=beta.d,  
+           epsilon.abx=epsilon.abx, p.abx=p.abx, phi=phi, k.r=k.r, k=k, k.d=k.d,
+           epsilon.ft=epsilon.ft, p.ft=p.ft, psi=psi)
+
+# initial state
+initial.state <- c(R=1e3, S.abx=0, S.ft=0, C=1e1, D=0)
+
+best.attack.rate <- stochastic.sim(param, initial.state,
+                                   stochastic.dx.dt.new, simulations)
 ```
 
 We ran `r simulations` simulations and we saw an attack rate of 
-`r lanzas.attack.rate[2]` (95% CI `r lanzas.attack.rate[c(1, 3)]`) and
+`r lanzas.attack.rate[2]` (95% ci `r lanzas.attack.rate[c(1, 3)]`) and
 `r new.attack.rate[2]` (95% CI `r new.attack.rate[c(1, 3)]`) in the 
-original model and new model respectively.
+original model and new model respectively. We also computed a "base case
+scenario" model for the Fecal-Transplant model, with parameters 
+(put in paramters!) and saw an attack rate of
+`r best.attack.rate[2]` (95% ci `r best.attack.rate[c(1, 3)]`)
 
 For computational analysis, we used R version 3.2.0 (@rcore). We used the
 SymPy library for symbolic mathematics (@sympy).
