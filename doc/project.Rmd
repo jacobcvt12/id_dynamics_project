@@ -433,9 +433,9 @@ proportion of patients who receive fecal transplant resulted in the
 greatest change in R0: 1.05 in which all diseased patients receive fecal
 transplant and 1.28 in which all patients receive antibiotic treatment.
 In addition, varying the fecal transplant rate between 12 hours and 4
-days shifted the R0 by \~10% even while maintaining the baseline
+days shifted the R0 by \~10%, even while maintaining the baseline
 estimate of only 20% of CDI cases treated with fecal transplant. We also
-reflect an R0 point-estimate of 1.03 under a “best case” fecal
+reflect an R0 point-estimate of 1.03 under a “best-case” fecal
 transplant scenario in which 100% of diseased patients received fecal
 transplant, the duration of treatment is 12 hours, and there is a 100%
 cure rate.
