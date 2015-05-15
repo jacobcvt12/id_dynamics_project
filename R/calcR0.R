@@ -24,7 +24,7 @@ calc.R0 <- function(N, param) {
   S.a.0 <- ((a.s.abx * k.r + alpha) * N) / (alpha + a.s.abx * k.r + (1 - a.s.abx) * k + theta.abx)
   R.0 <- -((S.a.0 + S.f.0) * (beta.c * epsilon.abx * p.abx * psi - 
                               beta.c * epsilon.abx * p.abx - 
-                              beta.c * epsilon.ft * psi * p.ft + 
+                              beta.c * epsilon.ft * psi * p.ft - 
                               beta.c * k.d - 
                               beta.d * phi)) / 
          ((k - phi) * (epsilon.abx * p.abx * psi - 
