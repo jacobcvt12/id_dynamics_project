@@ -48,15 +48,15 @@ a.d <- 0.01
 alpha <- 0.5
 theta <- 0.033
 theta.abx <- 0.033
-theta.ft <- 0.033
+theta.ft <- 1.0
 beta.c <- beta.d <- 0.007
 f <- 0.6
 epsilon <- epsilon.abx <- 0.1
-epsilon.ft <- 0.01
+epsilon.ft <- 1.0
 p <- p.abx <- 0.8
-p.ft <- 0.8
-psi <- 0.1
-phi <- 0.05
+p.ft <- 0.9
+psi <- 0.2
+phi <- 0.04
 k.r <- 0.33
 k <- 0.15
 k.d <- 0.068
