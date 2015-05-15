@@ -311,7 +311,7 @@ Model parameters are reflected in **Table 1**. Proportions of admitted
 patients, the antibiotic inpatient prescription rate, and patient
 discharge rates were retained from the *Lanzas* cohort data. We also
 retained *Lanzas* literature-derived estimates for the transmission
-coefficient of infectious (asymptomatically colonized or diseased)
+coefficients of infectious (asymptomatically colonized and diseased)
 patients ($\beta_c, \beta_d$). Due to collapsing the colonized compartments in
 our model, we accordingly modified the rate at which colonized patients
 progress to symptomatic infection ($\phi$) but retained the underlying
@@ -334,7 +334,7 @@ the same estimate as the *Lanzas* model for comparison purposes.
 
 Fecal transplant parameters represent new additions to the model. We set
 the point estimate of proportion of CDI cases who receive fecal
-transplant ($\psi$) at 0.20, to reflect that at present fecal transplant is
+transplant ($\psi$) at 0.20, to reflect that, at present, fecal transplant is
 generally reserved only for recurrent or refractory CDI (@chakra-nour).
 We assumed, consistent with clinical guidelines, that all symptomatic
 patients receive antibiotic or fecal transplant treatment, and therefore
