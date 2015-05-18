@@ -1,48 +1,41 @@
 #! /usr/bin/env python
-from sympy import Symbol, diff, latex
+from sympy import diff, latex, symbols
 from sympy.matrices import Matrix
 
 # symbols
-a_c = Symbol("a_c")
-a_d = Symbol("a_d")
-beta_c = Symbol("beta_c")
-beta_d = Symbol("beta_d")
-delta = Symbol("delta")
-e = Symbol("epsilon_f")
-epsilon = Symbol("epsilon")
-k = Symbol("k")
-k_d = Symbol("k_d")
-lambda_sym = Symbol("lambda")
-p = Symbol("p")
-psi = Symbol("phi")
-rho = Symbol("p_f")
-tau = Symbol("psi")
-C = Symbol("C")
-S_a = Symbol("S_a")
-S_f = Symbol("S_f")
-D = Symbol("D")
-N = Symbol("N")
+# parameters
+a_c, a_d, beta_c, beta_d, delta, e, epsilon = \
+    symbols('a_c, a_d, beta_c, beta_d, delta, e, epsilon')
+k, k_d, lambda_sym, p, psi, rho, tau = \
+    symbols('k, k_d, lambda_sym, p, psi, rho, tau')
 
-# fancy matrices
+# compartments
+C, S_a, S_f, D, N = symbols('C, S_a, S_f, D, N')
+
+# create elements of the "Fancy" F and V matrices as
+# identifed in ODEs
+# rate of appearance of new infections in compartment
 F_fancy_1 = beta_c * C * (S_a + S_f) + beta_d * D * (S_a + S_f)
 F_fancy_2 = 0
 
+# rate of transfer of individuals by other means (V^- - V^+)
 V_fancy_1 = (psi * C - k * C) - (a_c * delta * N)
 V_fancy_2 = (p * epsilon * D * (1 - tau) +
              rho * e * D * tau + k_d * D) - \
             (a_d * delta * N + psi * C)
 
-# F and V matrices
+# Jacobian of "Fancy" F and V
 F = Matrix([[diff(F_fancy_1, C), diff(F_fancy_1, D)],
             [diff(F_fancy_2, C), diff(F_fancy_2, D)]])
 
 V = Matrix([[diff(V_fancy_1, C), diff(V_fancy_1, D)],
             [diff(V_fancy_2, C), diff(V_fancy_2, D)]])
 
-# Next Generation Matrix
+# Next Generation Matrix calculation
 A = F * V.inv()
-R_0 = A.eigenvals()
+R_0 = A.eigenvals()  # look at eigenvalues to find dominant
 
+# print out latex of results
 print("F")
 print(latex(F))
 
@@ -53,13 +46,5 @@ print("NGM")
 print(latex(A))
 
 print("eigenvalues")
+print(latex(list(R_0)[0]))
 print(latex(list(R_0)[1]))
-
-# DFE
-# a_r, delta, N, theta, S, k_r, R, alpha = \
-#     symbols('a_r, delta, N, theta, S, k_r, R, alpha')
-# a_s, p, epsilon, D, k, beta_c, C_min, C_plu, beta_d = \
-#     symbols('a_s, p, epsilon, D, k, beta_c, C_min, C_plu, beta_d')
-#
-# sys1 = Eq(a_r * delta * N + theta * S - k_r * R - alpha * R, 0)
-# sys2 = Eq(a_s * delta * N + alpha * R- theta * S - k * S, 0)
