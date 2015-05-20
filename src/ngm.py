@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-from sympy import diff, latex, symbols
+from sympy import latex, symbols
 from sympy.matrices import Matrix
 
 # symbols
@@ -12,24 +12,19 @@ k, k_d, lambda_sym, p, psi, rho, tau = \
 # compartments
 C, S_a, S_f, D, N = symbols('C, S_a, S_f, D, N')
 
-# create elements of the "Fancy" F and V matrices as
+# create elements of the "Fancy" (cursive) F and V matrices as
 # identifed in ODEs
 # rate of appearance of new infections in compartment
-F_fancy_1 = beta_c * C * (S_a + S_f) + beta_d * D * (S_a + S_f)
-F_fancy_2 = 0
+F_fancy = Matrix([beta_c * C * (S_a + S_f) + beta_d * D * (S_a + S_f), 0])
 
 # rate of transfer of individuals by other means (V^- - V^+)
-V_fancy_1 = (psi * C - k * C) - (a_c * delta * N)
-V_fancy_2 = (p * epsilon * D * (1 - tau) +
-             rho * e * D * tau + k_d * D) - \
-            (a_d * delta * N + psi * C)
+V_fancy = Matrix([(psi * C - k * C) - (a_c * delta * N),
+                  (p * epsilon * D * (1 - tau) +
+                   rho * e * D * tau + k_d * D) - (a_d * delta * N + psi * C)])
 
 # Jacobian of "Fancy" F and V
-F = Matrix([[diff(F_fancy_1, C), diff(F_fancy_1, D)],
-            [diff(F_fancy_2, C), diff(F_fancy_2, D)]])
-
-V = Matrix([[diff(V_fancy_1, C), diff(V_fancy_1, D)],
-            [diff(V_fancy_2, C), diff(V_fancy_2, D)]])
+F = F_fancy.jacobian([C, D])
+V = V_fancy.jacobian([C, D])
 
 # Next Generation Matrix calculation
 A = F * V.inv()
